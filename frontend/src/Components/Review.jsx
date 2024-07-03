@@ -16,15 +16,15 @@ const Review = ({ review }) => {
         }),
   });
 
-  useEffect(() => {
-    // Example condition: Only log if data has more than 0 items
-    if (data) {
-      console.log("user data:", data);
-    }
-    if (error) {
-      console.log("Error updated:", error);
-    }
-  }, [data, error]);
+  // useEffect(() => {
+  //   // Example condition: Only log if data has more than 0 items
+  //   if (data) {
+  //     console.log("user data:", data);
+  //   }
+  //   if (error) {
+  //     console.log("Error updated:", error);
+  //   }
+  // }, [data, error]);
 
   return (
     <div className="">
@@ -49,7 +49,7 @@ const Review = ({ review }) => {
         {Array(review.star)
           .fill()
           .map((_, i) => (
-            <img src="/images/star.png" className="w-[15px]" alt="" />
+            <img src="/images/star.png" className="w-[15px]" alt="" key={i} />
           ))}
       </div>
 

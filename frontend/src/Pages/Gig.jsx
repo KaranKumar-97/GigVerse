@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Slide from "../Components/Slide";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import Loader from "../Components/Loader";
 import Reviews from "../Components/Reviews";
 
 const Gig = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -18,6 +19,8 @@ const Gig = () => {
 
   const param = useParams();
   const gigId = param.id;
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
 
   const { isPending, error, data } = useQuery({
     queryKey: ["gig"],
@@ -26,8 +29,8 @@ const Gig = () => {
         .get(`${import.meta.env.VITE_BACKEND_URL}/gigs/single/${gigId}`)
         .then((res) => res.data)
         .catch((error) => {
-          if (error.response.data.error) toast.error(error.response.data.error);
-          console.log(error);
+          toast.error(`Something went wrong : ${error.message}`);
+          console.log(error.message);
           throw error;
         }),
   });
@@ -42,10 +45,10 @@ const Gig = () => {
       axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/users/${data.userId}`)
         .then((res) => res.data)
-        .catch((error) => {
-          if (error.response.data.error) toast.error(error.response.data.error);
-          console.log(error);
-          throw error;
+        .catch((errorUser) => {
+          toast.error(errorUser.message);
+          console.log("dss", errorUser.message);
+          throw errorUser;
         }),
   });
 
@@ -72,12 +75,27 @@ const Gig = () => {
   return (
     <div className="w-[90%] mx-auto flex gap-6">
       {isPending && (
-        <div className=" w-full h-[100vh] flex justify-center items-center">
+        <div className=" w-full h-[80vh] flex justify-center items-center">
           <Loader />
         </div>
       )}
 
-      {!isPending && (
+      {error && (
+        <div className="w-full h-[80vh] flex flex-col gap-6 justify-center items-center">
+          <p className="text-blue-900 text-4xl font-bold">
+            Oops! Soemthing Went Wrong
+          </p>
+          <p className="text-red-600 text-4xl font-bold">{error.message}</p>
+          <button
+            className="px-6 py-4 bg-blue-900 text-white rounded-lg"
+            onClick={() => navigate("/")}
+          >
+            Take me to Home Page
+          </button>
+        </div>
+      )}
+
+      {!isPending && !error && (
         <div className="flex flex-col md:flex-row gap-10 items-start">
           {/* left */}
           <div className="mt-10 mb-8 space-y-3 w-[90vw] md:w-[58vw]">
@@ -98,7 +116,7 @@ const Gig = () => {
               <div className="flex items-center gap-2">
                 <img
                   src={dataUser.img || "/images/noavatar.jpg"}
-                  className="w-[50px] h-[50px] rounded-full"
+                  className="w-[50px] h-[50px] border-2 object-cover rounded-full"
                   alt=""
                 />
                 <p>{dataUser.fullname}</p>
@@ -127,14 +145,13 @@ const Gig = () => {
             <div className="border p-2  rounded-xl">
               <Slide slidesToShow={1} arrowsScroll={1}>
                 {data.images.map((img, index) => (
-                  <div className="flex items-center  h-full">
+                  <div className="flex items-center h-full" key={index}>
                     <img
                       className="object-contain mx-auto  max-h-[500px]"
-                      key={index}
                       src={img}
                       alt=""
                     />
-                   </div>
+                  </div>
                 ))}
               </Slide>
 
@@ -168,75 +185,76 @@ const Gig = () => {
               </ul>
             </div>
 
-            <div>
-              <h1 className="text-2xl font-bold my-8">About the Seller</h1>
-              <div className="flex items-center gap-8">
-                <img
-                  src="/images/avatar.jpg"
-                  className="w-[120px] h-[120px] rounded-full"
-                  alt=""
-                />
-                <div className="flex flex-col gap-4">
-                  <p className="text-xl font-semibold">Karan Kumar</p>
+            {!isPendingUser && !errorUser && (
+              <div>
+                <h1 className="text-2xl font-bold my-8">About the Seller</h1>
+                <div className="flex items-center gap-8">
+                  <img
+                    src={dataUser.img || `/images/noavatar.jpg`}
+                    className="w-[120px] h-[120px] border-2 object-cover rounded-full"
+                    alt=""
+                  />
+                  <div className="flex flex-col gap-4">
+                    <p className="text-xl font-semibold">{dataUser.fullname}</p>
 
-                  <div className="flex gap-1">
-                    {!isNaN(Math.round(data.totalStar / data.starNumber)) && (
-                      <>
-                        <div className="flex gap-1">
-                          {Array(Math.round(data.totalStar / data.starNumber))
-                            .fill()
-                            .map((_, index) => (
-                              <img
-                                key={index}
-                                src="/images/star.png"
-                                className="w-[15px]"
-                                alt=""
-                              />
-                            ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <button className="px-4 py-2 border border-gray-800 rounded-lg ">
-                    Contact Me
-                  </button>
-                </div>
-              </div>
-              <div className="border border-gray-400 rounded-lg p-6 my-10">
-                <div className="grid grid-cols-2">
-                  <div>
-                    <p>From</p>
-                    <p className="font-semibold">India</p>
-                  </div>
-                  <div>
-                    <p className="title">Member since</p>
-                    <p className="font-semibold">Aug 2022</p>
-                  </div>
-                  <div>
-                    <p className="title">Avg. response time</p>
-                    <p className="font-semibold">4 hours</p>
-                  </div>
-                  <div>
-                    <p className="title">Last delivery</p>
-                    <p className="font-semibold">1 day</p>
-                  </div>
-                  <div>
-                    <p className="title">Languages</p>
-                    <p className="font-semibold">English</p>
+                    <div className="flex gap-1">
+                      {!isNaN(Math.round(data.totalStar / data.starNumber)) && (
+                        <>
+                          <div className="flex gap-1">
+                            {Array(Math.round(data.totalStar / data.starNumber))
+                              .fill()
+                              .map((_, index) => (
+                                <img
+                                  key={index}
+                                  src="/images/star.png"
+                                  className="w-[15px]"
+                                  alt=""
+                                />
+                              ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <button className="px-4 py-2 border border-gray-800 rounded-lg " onClick={()=>{
+                      axios.post(`${import.meta.env.VITE_BACKEND_URL}/conversations`, {to:dataUser._id},{withCredentials:true}).then((res)=>res.data).catch((error)=>{toast.error(error.message)}).then(()=>navigate(`../message/${dataUser._id}${currentUser._id}`))}}>
+                      Contact Me
+                    </button>
                   </div>
                 </div>
-                <hr className="my-2" />
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Molestias commodi placeat pariatur quasi nihil reiciendis
-                  excepturi aliquid odit rem sequi.
-                </p>
+                <div className="border border-gray-400 rounded-lg p-6 my-10">
+                  <div className="grid grid-cols-2">
+                    <div>
+                      <p>From</p>
+                      <p className="font-semibold">India</p>
+                    </div>
+                    <div>
+                      <p className="title">Member since</p>
+                      <p className="font-semibold">Aug 2022</p>
+                    </div>
+                    <div>
+                      <p className="title">Avg. response time</p>
+                      <p className="font-semibold">4 hours</p>
+                    </div>
+                    <div>
+                      <p className="title">Last delivery</p>
+                      <p className="font-semibold">1 day</p>
+                    </div>
+                    <div>
+                      <p className="title">Languages</p>
+                      <p className="font-semibold">English</p>
+                    </div>
+                  </div>
+                  <hr className="my-2" />
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Molestias commodi placeat pariatur quasi nihil reiciendis
+                    excepturi aliquid odit rem sequi.
+                  </p>
+                </div>
               </div>
+            )}
 
-                  <Reviews gigId={gigId}/>
-
-              {/* <Reviews gigId={id} /> */}
-            </div>
+            <Reviews gigId={gigId} />
           </div>
 
           {/* right */}
@@ -277,8 +295,8 @@ const Gig = () => {
                 </div>
               ))}
 
-            <button className="w-full py-2 bg-blue-900 rounded-lg mt-8 text-white font-semibold">
-              Continue
+            <button className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold">
+              Order
             </button>
           </div>
         </div>

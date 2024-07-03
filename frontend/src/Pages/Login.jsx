@@ -5,6 +5,12 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+    });
+  }, []);
     const navigate=useNavigate()
   const [loginData, setLoginData] = useState({
     email: "",

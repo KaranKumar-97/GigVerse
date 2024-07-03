@@ -6,6 +6,12 @@ import Catcard from "../Components/Catcard.jsx";
 import ProjectCard from "../Components/ProjectCard.jsx";
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+    });
+  }, []);
   const [sliderSettings, setSliderSettings] = useState({
     slidesToShow: 5,
     arrowsScroll: 3,

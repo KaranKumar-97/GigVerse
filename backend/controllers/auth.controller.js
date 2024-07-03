@@ -54,7 +54,7 @@ const logout = async (req, res) => {
   
   try {
     const {accessToken} = req.cookies
-    console.log(accessToken);
+    // console.log(accessToken);
     if(!accessToken) return res.status(401).json({error: "You are not authenticated"});
 
     return res.clearCookie("accessToken",{

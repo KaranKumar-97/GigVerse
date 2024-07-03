@@ -11,20 +11,20 @@ const GigCard = ({ item }) => {
         .get(`${import.meta.env.VITE_BACKEND_URL}/users/${item.userId}`)
         .then((res) => res.data)
         .catch((error) => {
-          if (error.response.data.error) toast.error(error.response.data.error);
+          toast.error(error.message);
           throw error;
         }),
   });
 
-  useEffect(() => {
-    // Example condition: Only log if data has more than 0 items
-    if (data) {
-      console.log("Data updated:", data);
-    }
-    if (error) {
-      console.log("Error updated:", error);
-    }
-  }, [data, error]);
+  // useEffect(() => {
+  //   // Example condition: Only log if data has more than 0 items
+  //   if (data) {
+  //     console.log("Data updated:", data);
+  //   }
+  //   if (error) {
+  //     console.log("Error updated:", error);
+  //   }
+  // }, [data, error]);
 
 
   return (

@@ -113,7 +113,7 @@ const Navbar = () => {
                 <img
                   src={currentUser.img || "/images/noavatar.jpg"}
                   alt=""
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-12 h-12 border-2 object-cover rounded-full"
                 />
                 <span>{currentUser.fullname}</span>
               </div>
@@ -126,7 +126,7 @@ const Navbar = () => {
                 >
                   {currentUser?.isSeller && (
                     <>
-                      <Link to="/gigs" onClick={(event) => {event.stopPropagation(); setOpen(false);}}>
+                      <Link to="gigs?category=" onClick={(event) => {event.stopPropagation(); setOpen(false);}}>
                         Gigs
                       </Link>
                       <Link to="/addgigs" onClick={(event) => {event.stopPropagation(); setOpen(false);}}>

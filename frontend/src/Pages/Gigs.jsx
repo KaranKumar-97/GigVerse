@@ -32,8 +32,7 @@ const Gigs = () => {
         .get(`${import.meta.env.VITE_BACKEND_URL}/gigs${location.search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sortby}`)
         .then((res) => res.data)
         .catch((error) => {
-          if(error.response.data.error)
-          toast.error(error.response.data.error);
+          toast.error("Something went wrong!");
           throw error;
         }),
   });
@@ -55,10 +54,10 @@ const Gigs = () => {
   //   }
   // }, [data, error]);
 
-  if (error) {
-    toast.error(error.message);
-    return "An error has occurred: " + error.message;
-}
+//   if (error) {
+//     toast.error(error.message);
+//     return "An error has occurred: " + error.message;
+// }
 
   return (
     <div className="w-[90%] mx-auto">
@@ -116,8 +115,15 @@ const Gigs = () => {
       </div>
 
       {isPending && <Loader />}
+      {error && (
+       <div className="w-full h-[50vh] flex flex-col gap-6 justify-center items-center">
+       <p className="text-blue-900 text-4xl font-bold">Oops! Soemthing Went Wrong</p>
+       <p className="text-red-600 text-4xl font-bold">{error.message}</p>
+       <button className="px-6 py-4 bg-blue-900 text-white rounded-lg" onClick={()=>navigate("/")}>Take me to Home Page</button>
+     </div>
+      )}
 
-      {isPending ? "" : error ? "error" : (
+      {isPending ? "" : error ? "" : (
         <div className="flex justify-center flex-wrap">
           {data.map((gig) => (
             <GigCard item={gig} key={gig._id} />

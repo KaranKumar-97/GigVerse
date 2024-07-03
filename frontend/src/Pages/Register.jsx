@@ -7,6 +7,12 @@ import { useNavigate } from "react-router-dom";
 import upload from "../utils/upload.jsx";
 
 const Register = () => {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+    });
+  }, []);
   const navigate = useNavigate();
 
   const [registerData, setRegisterData] = useState({

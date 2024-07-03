@@ -111,7 +111,7 @@ const Reviews = ({ gigId }) => {
       {!isPending && (
         <div className="space-y-10">
           {data.map((review, index) => (
-            <Review review={review} />
+            <Review review={review} key={index} />
           ))}
         </div>
       )}

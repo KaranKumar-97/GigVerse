@@ -50,7 +50,7 @@ function App() {
         { path: "/mygigs", element: <Mygigs /> },
         { path: "/addgigs", element: <Addgigs /> },
         { path: "/messages", element: <Messages /> },
-        { path: "/messages/:id", element: <Message /> },
+        { path: "/message/:id", element: <Message /> },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register />}
 
