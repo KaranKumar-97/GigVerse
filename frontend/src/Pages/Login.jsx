@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
+import useUserStore from "../Store/useUserStore";
 
 const Login = () => {
   useEffect(() => {
@@ -24,6 +25,10 @@ const Login = () => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   }
+
+  const login = useUserStore((state)=>state.login)
+  const currentUser = useUserStore((state)=>state.currentUser)
+
 
 
   const handleLogin = async () => {
@@ -48,25 +53,22 @@ const Login = () => {
 
    try {
     const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, loginData,{withCredentials:true})
-    
-    console.log('Response Data:', res.data);
-    localStorage.setItem("currentUser", JSON.stringify(res.data));
-    console.log('Stored Data:', localStorage.getItem("currentUser"));
+    const user=res.data
+
+    login(user)
+
     toast.success("Logged in successfully")
     setTimeout(() => {
         navigate("/");
       }, 1400);
      
    } catch (err) {
-    toast.error(err.response.data.error)
-    console.log(err.response.data)
+    toast.error(err?.response?.data?.error ||err.message)
+    // console.log(err.message)
    }
   
   }
 
-  useEffect(() => {
-    console.log(loginData)
-  },[loginData])
 
   return (
     <div>

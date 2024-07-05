@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -21,8 +21,42 @@ import {
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query'
+import useUserStore from "./Store/useUserStore";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import Loader from "./Components/Loader";
 
 function App() {
+  const login=useUserStore((state)=>state.login);
+  const userLoaded = useUserStore((state) => state.userLoaded);
+
+  useEffect(()=>{
+    const accessToken = Cookies.get('accessToken');
+
+    if (accessToken) {
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/fetchuser`, {withCredentials: true})
+      .then((res) => res.data).then((user) => {
+        login(user)
+        useUserStore.setState({ userLoaded: true })
+      }).catch((error) => {
+        console.log(error);
+        useUserStore.setState({ userLoaded: true });
+      });
+    }
+    else{
+      useUserStore.setState({ userLoaded: true });
+    }
+  },[login])
+
+
+  
+  if (!userLoaded) {
+    return <div className="w-full h-[100vh] flex justify-center items-center">
+      <Loader />
+    </div>; // Loading screen
+  }
+
+
   const queryClient = new QueryClient()
   const Layout = () => {
     return (

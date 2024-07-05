@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import Loader from "../Components/Loader";
 import Reviews from "../Components/Reviews";
+import useUserStore from "../Store/useUserStore";
 
 const Gig = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Gig = () => {
 
   const param = useParams();
   const gigId = param.id;
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUser = useUserStore((state) => state.currentUser);
 
 
   const { isPending, error, data } = useQuery({
@@ -51,6 +52,13 @@ const Gig = () => {
           throw errorUser;
         }),
   });
+
+  const handleOrder =()=>{
+
+      axios.post(`${import.meta.env.VITE_BACKEND_URL}/orders/${gigId}`,{buyerName:currentUser.fullname,sellerName:dataUser.fullname},{withCredentials:true})
+      .then((res)=>res.data).then(()=>toast.success("Order Placed Successfully")).then(()=>navigate("/orders"))
+      .catch((error)=>{toast.error(error?.response?.data?.error || error.message)})
+  }
 
   // useEffect(() => {
   //   // Example condition: Only log if data has more than 0 items
@@ -154,21 +162,6 @@ const Gig = () => {
                   </div>
                 ))}
               </Slide>
-
-              {/* <img
-              src="https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/284102611/original/37cd410aef156cbbf4ef6c1854d538fbbd5df357/create-ai-generated-concept-art-within-24-hours.jpg"
-              alt=""
-            />
-
-            <img
-              src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs2/284102611/original/e937383e84c9f9f79eba6a58bf11a61f0547cef7/create-ai-generated-concept-art-within-24-hours.jpg"
-              alt=""
-            />
-
-            <img
-              src="https://fiverr-res.cloudinary.com/images/t_smartwm/t_main1,q_auto,f_auto,q_auto,f_auto/v1/attachments/delivery/asset/5ddeecbc4236f5cf448f436e551b07fa-1715800218/FINAL%20DESIGN/create-ai-generated-concept-art-within-24-hours.jpg"
-              alt=""
-            /> */}
             </div>
 
             <div className="">
@@ -295,8 +288,8 @@ const Gig = () => {
                 </div>
               ))}
 
-            <button className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold">
-              Order
+            <button className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold" onClick={handleOrder}>
+              Request to Order
             </button>
           </div>
         </div>

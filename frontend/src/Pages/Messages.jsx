@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import useUserStore from "../Store/useUserStore";
 
 const Messaages = () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUser = useUserStore((state) => state.currentUser);
 
   const queryClient = useQueryClient();
 

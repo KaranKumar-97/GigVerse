@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { TextField } from '@mui/material';
+import useUserStore from '../Store/useUserStore';
 
 
 
@@ -13,7 +14,7 @@ const Message = () => {
   const messageInputRef = useRef(null);
   const messagesEndRef = useRef(null); // Step 1: Ref for scrolling to bottom
 
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUser = useUserStore((state) => state.currentUser);
   
 
   const { isPending, error, data } = useQuery({

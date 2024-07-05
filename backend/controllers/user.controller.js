@@ -1,5 +1,4 @@
 import User from "../models/user.model.js"
-import jwt from "jsonwebtoken"
 
 const deleteUser = async (req,res)=>{
     try {
@@ -27,5 +26,16 @@ const getUser = async (req,res)=>{
     }
 }
 
+const fetchUser = async (req,res)=>{
+    try {
+        const user = await User.findById(req.userId);
+        user.password=undefined;
+        res.status(200).json(user);
+    
+    } catch (error) {
+        return res.status(500).json({error: "Something went wrong", details: error.message});
+    }
+}
 
-export {deleteUser,getUser}
+
+export {deleteUser,getUser,fetchUser}

@@ -93,7 +93,7 @@ const Register = () => {
     const newregisterData = imgUrl ? { ...registerData, img: imgUrl } : registerData;
 
     try {
-      const res = await axios.post("http://localhost:8800/api/auth/register", newregisterData,)
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, newregisterData,)
       console.log('Response Data:', res.data);
 
       toast.success("Registered successfully");
@@ -105,7 +105,6 @@ const Register = () => {
       
     }
   };
-
 
   return (
     <div className="">

@@ -36,7 +36,7 @@ const GigCard = ({ item }) => {
             className="object-cover h-[270px] rounded-t-lg  "
             alt=""
           />
-          {!isPending && (
+          {!isPending && !error &&  (
              <div className="text-xs flex items-center gap-3 pt-2 px-3">
              <img src={data.img || "/images/noavatar.jpg"}  className='w-[40px] h-[40px] rounded-full' alt="" />
              <p>{data?.fullname}</p>

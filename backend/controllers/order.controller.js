@@ -20,6 +20,8 @@ export const createOrder = async (req, res,next) => {
             price:gig.price,
             sellerId:gig.userId,
             buyerId:req.userId,
+            buyerName:req.body.buyerName,
+            sellerName:req.body.sellerName,
             payment_intent:"temporary string"
         })
 
