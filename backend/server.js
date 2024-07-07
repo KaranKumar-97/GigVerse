@@ -1,4 +1,4 @@
-const serverless = require('serverless-http');
+import serverless from 'serverless-http';
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
