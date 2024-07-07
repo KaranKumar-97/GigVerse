@@ -42,8 +42,8 @@ app.use("/api/messages",messageRoute)
 app.use("/api/conversations",conversationRoute)
 app.use("/api/reviews",reviewRoute)
 
-app.get('/api/test', (req, res) => {
-  res.status(200).send({ message: 'Backend is running' });
+app.get('/', (req, res) => {
+  res.status(200).send('Backend is running');
 });
 
 
