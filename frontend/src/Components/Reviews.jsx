@@ -43,6 +43,10 @@ const Reviews = ({ gigId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!reviewData.desc.trim() || reviewData.star <= 0) {
+      // Display an error message to the user
+      toast.error("Please provide a review and a star rating.");
+    }
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/reviews`,reviewData,{withCredentials:true});
@@ -81,9 +85,9 @@ const Reviews = ({ gigId }) => {
     <div>
       <h1 className="text-2xl font-bold my-8">Reviews</h1>
 
-      <div className="my-8 flex flex-col md:flex-row justify-center items-center gap-8">
+      <div className="my-8 flex flex-col md:flex-row justify-center items-center gap-3 md:gap-8">
         <TextField
-          sx={{ width: "70%" }}
+          sx={{ width: "80%" }}
           multiline
           fullWidth
           label="Write a Review"

@@ -106,7 +106,7 @@ const Gig = () => {
       {!isPending && !error && (
         <div className="flex flex-col md:flex-row gap-10 items-start">
           {/* left */}
-          <div className="mt-10 mb-8 space-y-3 w-[90vw] md:w-[58vw]">
+          <div className="md:mt-10 mb-8 space-y-3 w-[90vw] md:w-[58vw]">
             <p className="flex gap-2">
               <img src="/images/home.svg" alt="" /> {"/  "}GigVerse {">"}{" "}
               {data.category}
@@ -164,6 +164,48 @@ const Gig = () => {
               </Slide>
             </div>
 
+            <div className="w-[90vw] md:w-[30vw] border border-gray-400 rounded-lg p-6 h-auto mt-10  block md:hidden">
+            <div className="flex justify-between text-xl mb-5">
+              <p className="font-semibold">{data.shortTitle}</p>
+              <p>₹{data.price} INR</p>
+            </div>
+            <p>{data.shortDesc}</p>
+            <div className="flex justify-between my-5">
+              <div className="flex items-center gap-2">
+                <img
+                  src="/images/clock.png"
+                  className="w-[20px] h-[20px]"
+                  alt=""
+                />
+                <span>{data.deliveryTime} Days Delivery</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <img
+                  src="/images/recycle.png"
+                  className="w-[20px] h-[20px]"
+                  alt=""
+                />
+                <span>{data.revision} Revisions</span>
+              </div>
+            </div>
+
+            {data.features.length > 0 &&
+              data.features?.map((item, index) => (
+                <div key={index} className="flex gap-2">
+                  <img
+                    src="/images/greencheck.png"
+                    className="w-[20px] h-[20px]"
+                    alt=""
+                  />
+                  <p>{item}</p>
+                </div>
+              ))}
+
+            <button className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold" onClick={handleOrder}>
+              Request to Order
+            </button>
+          </div>
+
             <div className="">
               <h1 className="text-2xl font-semibold">About this Gig</h1>
               <p>{data.desc}</p>
@@ -208,8 +250,7 @@ const Gig = () => {
                         </>
                       )}
                     </div>
-                    <button className="px-4 py-2 border border-gray-800 rounded-lg " onClick={()=>{
-                      axios.post(`${import.meta.env.VITE_BACKEND_URL}/conversations`, {to:dataUser._id},{withCredentials:true}).then((res)=>res.data).catch((error)=>{toast.error(error.message)}).then(()=>navigate(`../message/${dataUser._id}${currentUser._id}`))}}>
+                    <button className="px-4 py-2 border border-gray-800 rounded-lg ">
                       Contact Me
                     </button>
                   </div>
@@ -251,7 +292,7 @@ const Gig = () => {
           </div>
 
           {/* right */}
-          <div className="w-[90vw] md:w-[30vw] border border-gray-400 rounded-lg p-6 h-auto mt-10 sticky top-[10rem]">
+          <div className="w-[90vw] md:w-[30vw] border border-gray-400 rounded-lg p-6 h-auto mt-10 sticky top-[10rem] hidden md:block">
             <div className="flex justify-between text-xl mb-5">
               <p className="font-semibold">{data.shortTitle}</p>
               <p>₹{data.price} INR</p>

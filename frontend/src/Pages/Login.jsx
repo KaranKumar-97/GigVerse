@@ -112,6 +112,10 @@ const Login = () => {
             Sign In
           </button>
         </div>
+            <div className="flex flex-wrap justify-center gap-2 my-5">
+
+          <p>Don't have an account?</p><button className="font-semibold" onClick={()=>navigate("/register")}>Click here to Sign Up</button>
+            </div>
       </div>
     </div>
   );
