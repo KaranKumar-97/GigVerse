@@ -25,6 +25,7 @@ import useUserStore from "./Store/useUserStore";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import Loader from "./Components/Loader";
+import toast from "react-hot-toast";
 
 function App() {
   const login=useUserStore((state)=>state.login);
@@ -39,12 +40,13 @@ function App() {
         login(user)
         useUserStore.setState({ userLoaded: true })
       }).catch((error) => {
-        console.log(error);
-        useUserStore.setState({ userLoaded: true });
+        // console.log(error);
+        toast.error("Server not responding");
+        useUserStore.setState({ userLoaded: false });
       });
     }
     else{
-      useUserStore.setState({ userLoaded: true });
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/test`).then((res) => {console.log(res.data)}).then(useUserStore.setState({ userLoaded: true })).catch((error) => {console.log(error); useUserStore.setState({ userLoaded: false })})
     }
   },[login])
 
@@ -53,7 +55,7 @@ function App() {
   if (!userLoaded) {
     return <div className="w-full h-[100vh] flex justify-center items-center">
       <Loader />
-    </div>; // Loading screen
+    </div>; 
   }
 
 

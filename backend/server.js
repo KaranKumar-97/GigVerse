@@ -1,4 +1,3 @@
-import serverless from 'serverless-http';
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
@@ -36,7 +35,7 @@ app.use(cors({
 
 const connect = async () =>{
     try {
-        await mongoose.connect(`${process.env.MONGODB_URL}`);
+        await mongoose.connect(`${process.env.MONGODB_URI}`);
         console.log("Connected to MongoDB");
       } catch (error) {
         console.log(error)
@@ -55,10 +54,14 @@ app.get('/', (req, res) => {
   res.status(200).send('Backend is running');
 });
 
+app.get('/api/test', (req, res) => {
+  res.status(200).json({message:'Backend is running'});
+});
+
+
+
 
 app.listen(`${process.env.PORT}`,()=>{
     connect()
     console.log(`Backend is running at port ${process.env.PORT}`)
 })
-
-export const handler = serverless(app);

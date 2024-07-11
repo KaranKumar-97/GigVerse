@@ -54,7 +54,7 @@ const Home = () => {
       </h1>
       <Slide {...sliderSettings}>
         {cards.map((card) => {
-          return <Catcard item={card} key={card.id} className="border" />;
+          return <Catcard item={card} key={card.id} className="" />;
         })}
       </Slide>
         
@@ -63,11 +63,11 @@ const Home = () => {
         <div className="w-[90%] mx-auto ">
 
 
-      <h1 className="font-bold text-2xl text-gray-700 my-10">
+      {/* <h1 className="font-bold text-2xl text-gray-700 my-10">
         Inspiring work made on GigVerse
-      </h1>
+      </h1> */}
 
-      <div className="my-10">
+      {/* <div className="my-10">
         <Slide slidesToShow={sliderSettings.slidesToShow-1}>
           {projects.map((project) => {
             return (
@@ -75,7 +75,7 @@ const Home = () => {
             );
           })}
         </Slide>
-          </div>
+          </div> */}
       </div>
     </div>
   );

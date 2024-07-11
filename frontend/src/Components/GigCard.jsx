@@ -28,12 +28,12 @@ const GigCard = ({ item }) => {
 
 
   return (
-    <div className="max-w-[270px] my-5 mx-4 hover:scale-[101%] hover:shadow-2xl">
+    <div className="w-[270px] my-5 mx-4 transition-transform duration-300 ease-in-out hover:scale-[102%] hover:shadow-2xl">
       <Link to={`/gig/${item._id}`}>
         <div className="shadow-lg border border-gray-300 rounded-lg p-1 rounded-b-lg h-full cursor-pointer flex flex-col">
-          <img
+        <img
             src={item.cover}
-            className="object-cover h-[270px] rounded-t-lg  "
+            className="object-cover h-[270px] w-full"
             alt=""
           />
           {!isPending && !error &&  (
@@ -44,19 +44,21 @@ const GigCard = ({ item }) => {
 
           )}
          
-          <div className="text-sm px-4">
+          <div className="text-sm px-4 flex flex-col justify-between h-full">
             <p className="font-semibold text-lg">{item.title}</p>
-            <p className="pb-2">{item.desc}</p>
-            <div className="flex items-center gap-2">
+            <p className="pb-2">{item.desc.length>50 ? `${item.desc.substr(0,50)}...` : item.desc } </p>
+            <div className="flex justify-between items-center pb-2">
+              <div className="flex items-center justify-center gap-2">
               <img src="/images/star.png" className="w-5" alt="" />
-              <p className="text-[#ffc108] py-1">{!isNaN(Math.round(item.totalStar/item.starNumber)) && Math.round(item.totalStar/item.starNumber)} stars</p>
+              <p className="text-[#ffc108] py-1">{!isNaN(Math.round(item.totalStar/item.starNumber)) ? `${Math.round(item.totalStar/item.starNumber)} Stars`: ("No reviews")} </p>
+              </div>
+            <p className="font-semibold text-lg text-blue-900">₹{item.price} INR</p>
             </div>
           </div>
-          <hr />
-          <div className="flex justify-between px-4 py-2">
-            <img src="/images/heart.png" alt="" />
-            <p>{item.price} Rs.</p>
-          </div>
+          {/* <hr /> */}
+          {/* <div className="flex justify-between px-4 py-2"> */}
+            {/* <img src="/images/heart.png" alt="" /> */}
+          {/* </div> */}
         </div>
       </Link>
     </div>

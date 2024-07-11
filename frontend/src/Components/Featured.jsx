@@ -11,12 +11,12 @@ const Featured = () => {
     <div className="">
       <div className="md:bg-transparent relative bottom-[5rem] md:bottom-[0rem] bg-[#1A1B1D] text-white py-[20vw] px-[10vw] md:py-[8vw] md:px-[8vw] mx-auto">
         <div className="relative items-center space-y-10">
-          <h1 className="text-[5vw] md:text-[3.7vw] text-center md:text-left font-medium">
+          <h1 className="text-[6vw] md:text-[3.7vw] text-center md:text-left font-medium">
             Find the right{" "}
             <i className="font-notoSerif font-semibold">freelance</i>
             <br /> service, right away
           </h1>
-          <div className="flex mx-auto md:mx-0 max-w-[50vw]">
+          <div className="flex mx-auto md:mx-0 md:max-w-[50vw] max-w-[80vw]">
             <input
               type="text"
               placeholder="Search for services..."

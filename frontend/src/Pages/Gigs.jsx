@@ -61,7 +61,7 @@ const Gigs = () => {
 
   return (
     <div className="w-[90%] mx-auto">
-      <div className="mt-10 mb-8 space-y-3">
+      <div className="md:mt-10 mb-8 space-y-3">
         <p className="flex gap-2">
           <img src="/images/home.svg" alt="" /> {"/  "}GigVerse {">"} {location.search.split("=")[1] ? `${location.search.split("=")[1]}` : "All"}
         </p>
@@ -96,7 +96,7 @@ const Gigs = () => {
         </div>
 
         <div className="text-center">
-          <FormControl sx={{ m: 1, minWidth: 150 }}>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
             <Select
               labelId="demo-simple-select-label"
