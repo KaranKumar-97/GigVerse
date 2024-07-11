@@ -65,3 +65,6 @@ app.listen(`${process.env.PORT}`,()=>{
     connect()
     console.log(`Backend is running at port ${process.env.PORT}`)
 })
+
+
+export default app;
