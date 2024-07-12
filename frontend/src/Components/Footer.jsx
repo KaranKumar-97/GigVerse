@@ -1,5 +1,8 @@
 import React from "react";
-// import "./Footer.scss";
+import { Link } from "react-router-dom";
+import { BsGithub } from "react-icons/bs";
+import { FaLinkedin } from "react-icons/fa";
+import { SiLeetcode } from "react-icons/si";
 
 function Footer() {
   return (
@@ -72,25 +75,22 @@ function Footer() {
         <div className="bottom">
           <hr className="mt-5" />
         <div className="pt-2 flex flex-col md:flex-row justify-between items-center">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 text-gray-500 ">
-            <h2 className="font-bold text-4xl text-gray-300">GigVerse.</h2>
-            <a href="#" className="block">© GigVerse International Ltd. 2024</a>
+          <div className="flex flex-col justify-between items-center gap-2 text-gray-500 ">
+            <h2 className="font-bold text-3xl text-gray-300">GigVerse.</h2>
+            <a href="#" className="block text-sm">© GigVerse Ltd. 2024</a>
           </div>
+          <Link to="https://github.com/KaranKumar-97">
+            <p className="flex gap-2 items-center text-lg hover:text-gray-300 cursor-pointer">Developed by <BsGithub /> <span className="font-semibold"> Karan Kumar</span></p>
+          </Link>
           <div className="flex flex-col md:flex-row justify-between items-center gap-14 mt-4 md:mt-0">
-            <div className="flex gap-5">
-              <img src="/images/twitter.png" className="w-[30px] h-[30px]" alt="Twitter" />
-              <img src="/images/facebook.png" className="w-[30px] h-[30px]" alt="Facebook" />
-              <img src="/images/linkedin.png" className="w-[30px] h-[30px]" alt="LinkedIn" />
-              <img src="/images/pinterest.png" className="w-[30px] h-[30px]" alt="Pinterest" />
-              <img src="/images/instagram.png" className="w-[30px] h-[30px]" alt="Instagram" />
+            <div className="flex gap-8 items-center">
+              <Link to="https://github.com/KaranKumar-97"><BsGithub size={35} className="cursor-pointer" /></Link>
+              <Link to="https://www.linkedin.com/in/karan-kumar-kk97/"><FaLinkedin size={35} className="cursor-pointer" /></Link>
+              <Link to="https://leetcode.com/u/Karan__Kumar/"><SiLeetcode size={35} className="cursor-pointer" /></Link>
+                        
             </div>
-            <div className="flex items-center gap-3">
-              <img src="/images/language.png" className="w-[30px] h-[30px]" alt="Language" />
-              <a href="#" className="block">English</a>
-              <img src="/images/coin.png" className="w-[30px] h-[30px]" alt="Currency" />
-              <a href="#" className="block">USD</a>
-            </div>
-            <img src="/images/accessibility.png" className="border border-gray-400 rounded-full p-2 w-10" alt="Accessibility" />
+
+    
           </div>
         </div>
         </div>
