@@ -21,15 +21,15 @@ const Reviews = ({ gigId }) => {
         }),
   });
 
-  useEffect(() => {
-    // Example condition: Only log if data has more than 0 items
-    if (data) {
-      console.log("reviews:", data);
-    }
-    if (error) {
-      console.log("Error updated:", error);
-    }
-  }, [data, error]);
+  // useEffect(() => {
+  //   // Example condition: Only log if data has more than 0 items
+  //   if (data) {
+  //     console.log("reviews:", data);
+  //   }
+  //   if (error) {
+  //     console.log("Error updated:", error);
+  //   }
+  // }, [data, error]);
 
   const [reviewData, setReviewData] = useState({
     desc: "",
@@ -37,9 +37,9 @@ const Reviews = ({ gigId }) => {
     gigId: gigId,
   });
 
-  useEffect(() => {
-    console.log(reviewData);
-  }, [reviewData]);
+  // useEffect(() => {
+  //   console.log(reviewData);
+  // }, [reviewData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ const Reviews = ({ gigId }) => {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/reviews`,reviewData,{withCredentials:true});
         refetch()
-      console.log(res);
+      // console.log(res);
       toast.success("Review Submitted");
 
       setReviewData({ desc: "", star: 0, gigId: gigId });
