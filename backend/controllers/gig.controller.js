@@ -52,6 +52,10 @@ export const getGig = async (req, res, next) => {
 };
 export const getGigs = async (req, res, next) => {
     const q=req.query
+     // Decode URI component for category
+     if (q.category) {
+      q.category =decodeURIComponent( req.url.split('=')[1].split('&min')[0]);
+  }
 
     const filters = {
         ...(q.userId && {userId:q.userId}),
@@ -70,4 +74,14 @@ export const getGigs = async (req, res, next) => {
         next(err);
         
     }
+};
+
+export const getTopGigs = async (req, res, next) => {
+  try {
+      const gigs = await Gig.find({}).sort({sales: -1}).limit(10);
+      res.status(200).json(gigs);
+  } catch (err) {
+      res.status(500).json({message: "Something went wrong", error: err.message});
+      next(err);
+  }
 };

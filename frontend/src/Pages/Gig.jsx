@@ -7,6 +7,7 @@ import axios from "axios";
 import Loader from "../Components/Loader";
 import Reviews from "../Components/Reviews";
 import useUserStore from "../Store/useUserStore";
+import moment from "moment";
 
 const Gig = () => {
   const navigate = useNavigate();
@@ -39,8 +40,9 @@ const Gig = () => {
     isPending: isPendingUser,
     error: errorUser,
     data: dataUser,
+    refetch : refetchUser
   } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["user", data?.userId],
     queryFn: () =>
       axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/users/${data.userId}`)
@@ -266,9 +268,9 @@ const Gig = () => {
                         </>
                       )}
                     </div>
-                    <button className="px-4 py-2 border border-gray-800 rounded-lg ">
-                      Contact Me
-                    </button>
+                    {/* <button className="px-4 py-2 border border-gray-800 rounded-lg ">
+                      Place Order to contact me
+                    </button> */}
                   </div>
                 </div>
                 <div className="border border-gray-400 rounded-lg p-6 my-10">
@@ -279,26 +281,20 @@ const Gig = () => {
                     </div>
                     <div>
                       <p className="title">Member since</p>
-                      <p className="font-semibold">Aug 2022</p>
+                      <p className="font-semibold">{moment(dataUser.createdAt).format('LL')}</p>
+                    </div>
+                    <div>
+                      <p className="title">Total Orders Done</p>
+                      <p className="font-semibold">{dataUser?.orders || 0}</p>
                     </div>
                     <div>
                       <p className="title">Avg. response time</p>
                       <p className="font-semibold">4 hours</p>
                     </div>
-                    <div>
-                      <p className="title">Last delivery</p>
-                      <p className="font-semibold">1 day</p>
                     </div>
-                    <div>
-                      <p className="title">Languages</p>
-                      <p className="font-semibold">English</p>
-                    </div>
-                  </div>
                   <hr className="my-2" />
                   <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Molestias commodi placeat pariatur quasi nihil reiciendis
-                    excepturi aliquid odit rem sequi.
+                    {dataUser.desc}
                   </p>
                 </div>
               </div>

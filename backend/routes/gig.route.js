@@ -5,10 +5,12 @@ import {
   deleteGig,
   getGig,
   getGigs,
+  getTopGigs
 } from "../controllers/gig.controller.js";
 
 const router = express.Router();
 
+router.get("/topgigs", getTopGigs);
 router.post("/", verifyToken, createGig);
 router.delete("/:id", verifyToken, deleteGig);
 router.get("/single/:id", getGig);

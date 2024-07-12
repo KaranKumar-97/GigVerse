@@ -20,8 +20,8 @@ const Register = () => {
     email: "",
     password: "",
     country: "",
-    phoneNumber: "",
-    description: "",
+    expertise: "",
+    desc: "",
     isSeller: false,
     img: "",
   })
@@ -58,9 +58,9 @@ const Register = () => {
   
     }}
 
-  useEffect(()=>{
-    console.log(registerData);
-  },[ registerData])
+  // useEffect(()=>{
+  //   console.log(registerData);
+  // },[ registerData])
 
   const [image, setImage] = useState(null);
 
@@ -127,7 +127,7 @@ const Register = () => {
 
             <p className="font-medium text-gray-600">Upload Profile Picture:</p>
             <div className="border border-slate-300 p-3 rounded">
-            <input type="file" onChange={handleImageChange} />
+            <input type="file" accept="image/png, image/jpeg" onChange={handleImageChange} />
             {image && <img src={image} alt="Profile Preview" className="w-[19rem]" />}
             </div>
 
@@ -154,16 +154,17 @@ const Register = () => {
 
             <TextField
               fullWidth
-              name="phoneNumber"
-              label="Phone Number"
-              type="number"
+              name="expertise"
+              label="Expertise"
+              type="text"
+              placeholder="List all skills/exercises separated by commas"
               disabled={registerData.isSeller ? false : true}
               onChange={handleInput}
             />
 
             <TextField
               fullWidth
-              name="description"
+              name="desc"
               label="Description"
               placeholder="A short Description about Yourself"
               multiline

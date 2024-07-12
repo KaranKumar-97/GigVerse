@@ -18,6 +18,9 @@ const userSchema = new Schema({
   img: {
     type: String,
   },
+  expertise: {
+    type: String,
+  },
   orders: {
     type: Number,
   },

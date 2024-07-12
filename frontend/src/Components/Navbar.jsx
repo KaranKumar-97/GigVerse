@@ -67,6 +67,17 @@ const Navbar = () => {
   };
 
 
+  const categories = [
+    "Graphics & Design",
+    "Programming & Tech",
+    "AI Services",
+    "Video & Animation",
+    "Writing & Translation",
+    "Digital Marketing",
+    "Music & Audio",
+  ];
+
+
   return (
     <div
       className={
@@ -191,28 +202,14 @@ const Navbar = () => {
         <div className="bg-white hidden sm:block">
           <hr className="pt-1" />
           <div className="max-w-[90%] mx-auto">
-            <div className="flex justify-between">
-              <span className="border-b-[3px] border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
-                Graphics & Design
-              </span>
-              <span className="border-b-[3px] border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
-                Programming & Tech
-              </span>
-              <span className="border-b-[3px] border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
-                Digital Marketing
-              </span>
-              <span className="border-b-[3px] border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
-                Video & Animation
-              </span>
-              <span className="border-b-[3px] border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
-                Writing & Translation
-              </span>
-              <span className="border-b-[3px] border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
-                Music & Audio
-              </span>
-              <span className="border-b-[3px] border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
-                Business
-              </span>
+            <div className="flex gap-1 justify-between">
+
+              {categories.map((category,i) => (
+                <Link to={`/gigs?category=${category}`} key={i} className="border-b-[3px] text-sm border-transparent hover:border-b-[3px] hover:border-b-blue-900 cursor-pointer">
+                {category}
+              </Link>
+              ))}
+            
             </div>
           </div>
         </div>

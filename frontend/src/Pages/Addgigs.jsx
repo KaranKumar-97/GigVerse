@@ -72,6 +72,10 @@ const Addgigs = () => {
       setUploaded(true);
       dispatch({ type: "ADD_IMAGES", payload: { cover, images } });
     } catch (err) {
+      // toast.error("Failed to upload images");
+      toast.error(err?.response?.data?.error?.message || "Failed to upload images");
+      setUploading(false);
+      setUploaded(false);
       console.log(err);
     }
   };
@@ -121,7 +125,7 @@ const Addgigs = () => {
       }
     });
     if (!allFieldsFilled) {
-      toast.error("Please fill in all the fields.");
+      toast.error("Please fill in all the deatils and upload images.");
       return;
     }
     mutate(state);

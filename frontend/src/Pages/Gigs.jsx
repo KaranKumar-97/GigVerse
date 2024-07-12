@@ -4,12 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import Loader from "../Components/Loader.jsx";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const Gigs = () => {
   useEffect(() => {
@@ -24,6 +27,7 @@ const Gigs = () => {
   const maxRef = useRef();
 
   const location = useLocation();
+  console.log(location)
 
   const { isPending, error, data,refetch } = useQuery({
     queryKey: ["gigs"],
@@ -41,8 +45,31 @@ const Gigs = () => {
 
   useEffect(() => {
     refetch();
-  }, [sortby]);
+  }, [sortby, location.search]);
 
+  const navigate = useNavigate();
+
+  const categories = [
+    "All",
+    "Graphics & Design",
+    "Programming & Tech",
+    "Digital Marketing",
+    "Video & Animation",
+    "Writing & Translation",
+    "Music & Audio",
+    "Business",
+    "Consulting",
+    "AI Services",
+    "Personal Growth",
+  ];
+  const [categoryValue, setCategoryValue] = useState(location.search.split("=")[1] ? `${decodeURIComponent(location.search.split("=")[1])}` : "All");
+
+  const handleCategory= (value)=>  {
+    setCategoryValue(value);
+
+    if(value==="All") navigate(`/gigs?category?`);
+    else navigate(`/gigs?category=${value}`);
+  }
 
   // useEffect(() => {
   //   // Example condition: Only log if data has more than 0 items
@@ -63,40 +90,68 @@ const Gigs = () => {
     <div className="w-[90%] mx-auto">
       <div className="md:mt-10 mb-8 space-y-3">
         <p className="flex gap-2">
-          <img src="/images/home.svg" alt="" /> {"/  "}GigVerse {">"} {location.search.split("=")[1] ? `${location.search.split("=")[1]}` : "All"}
+          <img src="/images/home.svg" alt="" /> {"/  "}GigVerse {">"} {location.search.split("=")[1] ? 
+          `${decodeURIComponent(location.search.split("=")[1])}`
+           : "All"}
         </p>
 
-        <h1 className="font-bold text-2xl uppercase">{location.search.split("=")[1] ? `${location.search.split("=")[1]}` : "All"}</h1>
-        <p>
+        <h1 className="font-bold text-2xl uppercase">{location.search.split("=")[1] ? `${decodeURIComponent(location.search.split("=")[1])}` : "All"}</h1>
+        {/* <p>
           Paint a picture for your audience with digital & hand-drawn
           illustrations.
-        </p>
+        </p> */}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-5 justify-between my-5">
-        <div className="flex flex-col md:flex-row justify-center items-center gap-3">
-          <p className="font-semibold">Budget</p>
+      <p className="font-bold text-xl text-blue-800 my-2 pl-4">Apply Filters</p>
+
+      <div className="flex flex-col md:flex-row gap-5 justify-between items-center px-3 py-2 bg-gray-100 border rounded-xl">
+      <div className="w-[80%] lg:w-[20%] mt-3 lg:mt-0">
+      <Autocomplete
+            
+            size="small"
+            label="Switch Category"
+            options={categories}
+            value={categoryValue}
+            onChange={(e, value) => handleCategory(value)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                label="Change Category"
+                name="category"
+                placeholder="Search for a Category"
+                className="bg-white"
+
+              />
+            )}
+          />
+      </div>
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
+          <p className="font-semibold">Price :</p>
+          <div className="flex gap-3">
+
           <input
             type="number"
             placeholder="min"
             ref={minRef}
             // value={minRef.current?.value}
-            className="border border-gray-300 rounded-md px-2 py-1"
-          />
+            className="border border-gray-300 rounded-md px-2 py-1 w-[100px]"
+            />
           <input
             type="number"
             placeholder="max"
             ref={maxRef}
             // value={maxRef.current?.value}
-            className="border border-gray-300 rounded-md px-2 py-1"
-          />
+            className="border border-gray-300 rounded-md px-2 py-1 w-[100px]"
+            />
           <button className="px-4 py-1 bg-blue-900 text-white rounded-lg" onClick={()=> refetch()}>
             Apply
           </button>
+            </div>
         </div>
 
-        <div className="text-center">
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <div className="border w-[80%] lg:w-[15%]">
+          <FormControl fullWidth >
             <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -104,7 +159,9 @@ const Gigs = () => {
               value={sortby}
               label="Sort By"
               onChange={(e)=>{setSortby(e.target.value);}}
+              fullWidth
               size="small"
+              className="bg-white"
             >
               <MenuItem value="price">Price</MenuItem>
               <MenuItem value="sales">Best Selling</MenuItem>
@@ -123,7 +180,14 @@ const Gigs = () => {
      </div>
       )}
 
-      {isPending ? "" : error ? "" : (
+      {isPending ? "" : error ? "" : data.length==0 ? (
+        <div className="w-full h-[50vh] flex flex-col gap-6 justify-center items-center">
+          <p className="text-blue-900 text-4xl font-bold">No Gigs in this Category / Filter</p>
+     
+      
+        </div>
+      
+      ) :  (
         <div className="flex justify-center flex-wrap">
           {data.map((gig) => (
             <GigCard item={gig} key={gig._id} />

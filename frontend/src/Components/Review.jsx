@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 
 const Review = ({ review }) => {
   const { isPending, error, data } = useQuery({
@@ -15,6 +16,19 @@ const Review = ({ review }) => {
           throw error;
         }),
   });
+
+  const [likeColor, setLikeColor] = useState('black');
+  const [dislikeColor, setDislikeColor] = useState('black');
+
+  const handleLikeClick = () => {
+    setLikeColor(likeColor === 'green' ? 'black' : 'green');
+    setDislikeColor('black');
+  };
+
+  const handleDislikeClick = () => {
+    setDislikeColor(dislikeColor === 'red' ? 'black' : 'red');
+    setLikeColor('black');
+  };
 
   // useEffect(() => {
   //   // Example condition: Only log if data has more than 0 items
@@ -56,16 +70,16 @@ const Review = ({ review }) => {
       <div className="mt-3">{review.desc}</div>
 
       <div className="flex items-center gap-5 my-3">
-        <p className="font-semibold">Helpful ?</p>
-        <div className="flex gap-1 cursor-pointer">
-          <img src="/images/like.png" className="w-[20px]" alt="" />
-          <p>Yes</p>
-        </div>
-        <div className="flex gap-1 cursor-pointer">
-          <img src="/images/dislike.png" className="w-[20px]" alt="" />
-          <p>No</p>
-        </div>
+      <p className="font-semibold">Helpful?</p>
+      <div className="flex gap-1 cursor-pointer" onClick={handleLikeClick}>
+        <FaThumbsUp color={likeColor} size={20} />
+        <p>Yes</p>
       </div>
+      <div className="flex gap-1 cursor-pointer" onClick={handleDislikeClick}>
+        <FaThumbsDown color={dislikeColor} size={20} />
+        <p>No</p>
+      </div>
+    </div>
       <hr className="mt-10 border-gray-300" />
     </div>
   );
