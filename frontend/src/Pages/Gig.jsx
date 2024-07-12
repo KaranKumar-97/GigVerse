@@ -55,6 +55,10 @@ const Gig = () => {
   });
 
   const handleOrder = () => {
+    if(currentUser === null) {
+      toast.error("Please Login to place order")
+      return
+    }
     axios
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/orders/${gigId}`,
@@ -65,7 +69,7 @@ const Gig = () => {
       .then(() => toast.success("Order Placed Successfully"))
       .then(() => navigate("/orders"))
       .catch((error) => {
-        toast.error(error?.response?.data?.error || error.message);
+        toast.error(error?.response?.data?.error || error.message );
       });
   };
 

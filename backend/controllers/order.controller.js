@@ -14,6 +14,7 @@ export const createOrder = async (req, res,next) => {
         if(req.isSeller){
             return res.status(400).json({error:"Sellers cannot buy a gigs"})
         }
+        
         const order=new Order({
             gigId:gig._id,
             img:gig.cover,
