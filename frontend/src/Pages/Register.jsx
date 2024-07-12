@@ -94,7 +94,7 @@ const Register = () => {
 
     try {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, newregisterData,)
-      console.log('Response Data:', res.data);
+      // console.log('Response Data:', res.data);
 
       toast.success("Registered successfully");
       navigate('/login')

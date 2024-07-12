@@ -27,7 +27,6 @@ const Gigs = () => {
   const maxRef = useRef();
 
   const location = useLocation();
-  console.log(location)
 
   const { isPending, error, data,refetch } = useQuery({
     queryKey: ["gigs"],

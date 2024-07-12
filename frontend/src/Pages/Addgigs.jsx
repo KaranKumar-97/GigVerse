@@ -133,8 +133,6 @@ const Addgigs = () => {
     navigate("/mygigs");
   };
 
-  console.log(state)
-
   return (
     <div className="max-w-[90%] mx-auto -mt-3 md:mt-0">
       <h1 className="font-bold text-4xl mb-10 text-blue-900">Add New Gig</h1>
