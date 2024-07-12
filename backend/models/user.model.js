@@ -18,11 +18,8 @@ const userSchema = new Schema({
   img: {
     type: String,
   },
-  country: {
-    type: String,
-  },
-  phone: {
-    type: String,
+  orders: {
+    type: Number,
   },
   desc: {
     type: String,

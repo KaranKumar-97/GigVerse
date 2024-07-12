@@ -46,7 +46,7 @@ function App() {
       });
     }
     else{
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}/test`).then((res) => {console.log(res.data)}).then(useUserStore.setState({ userLoaded: true })).catch((error) => {console.log(error); useUserStore.setState({ userLoaded: false })})
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/test`).then(useUserStore.setState({ userLoaded: true })).catch((error) => {console.log(error); useUserStore.setState({ userLoaded: false })})
     }
   },[login])
 

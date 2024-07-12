@@ -1,23 +1,19 @@
-import useUserStore from "../Store/useUserStore";
-
-const currentUser = useUserStore(state => state.currentUser);
-
 export const INITIAL_STATE = {
-    userId: currentUser?._id,
+    userId: "",
     title: "",
-    cat: "",
+    category: "",
     cover: "",
     images: [],
     desc: "",
     shortTitle: "",
     shortDesc: "",
     deliveryTime: 0,
-    revisionNumber: 0,
+    revision: 0,
     features: [],
     price: 0,
   };
   
-  export const gigReducer = (state, action) => {
+  export const GigReducer = (state, action) => {
     switch (action.type) {
       case "CHANGE_INPUT":
         return {
@@ -25,6 +21,11 @@ export const INITIAL_STATE = {
           [action.payload.name]: action.payload.value,
         };
 
+        case "SET_CATEGORY":
+          return {
+            ...state,
+            category: action.payload,
+          };
         case "ADD_IMAGES":
             return {
               ...state,

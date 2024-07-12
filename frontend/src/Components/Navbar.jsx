@@ -66,9 +66,6 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("currentUser", currentUser);
-  }, [currentUser]);
 
   return (
     <div
@@ -123,40 +120,6 @@ const Navbar = () => {
                 <span>{currentUser.fullname}</span>
               </div>
 
-              {/* {open && (
-                <div
-                ref={popupRef}
-                  className="absolute top-18 border-2 
-                    bg-white text-gray-700 p-3 rounded-lg flex flex-col shadow-lg w-max z-10"
-                >
-                  {currentUser?.isSeller && (
-                    <>
-                      <Link to="mygigs" onClick={() => { setOpen(false);}}>
-                        My Gigs
-                      </Link>
-                      <Link to="/addgigs" onClick={() => { setOpen(false);}}>
-                        Add new Gigs
-                      </Link>
-                    </>
-                  )}
-                  <Link to="/orders" onClick={() => { setOpen(false);}}>
-                    Orders
-                  </Link>
-                  <Link to="/messages" onClick={() => { setOpen(false);}}>
-                    Messages
-                  </Link>
-                  <Link
-                    to="/"
-                    onClick={() => {
-                      handleLogout();
-                
-                      setOpen(false);
-                    }}
-                  >
-                    Logout
-                  </Link>
-                </div>
-              )} */}
               {open && (
                 <div
                   ref={popupRef}

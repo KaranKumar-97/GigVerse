@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import useUserStore from "../Store/useUserStore";
@@ -10,6 +10,7 @@ const Mygigs = () => {
   const currentUser = useUserStore((state) => state.currentUser);
 
   const queryClient = useQueryClient();
+  const navigate=useNavigate();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["myGigs"],
@@ -46,7 +47,7 @@ const Mygigs = () => {
     <div className="w-[90%] mx-auto">
       <div className="font-bold flex justify-between text-4xl my-10 text-blue-900">
         <h1>My Gigs</h1>
-        {data?.length>0 && <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl py-2 px-3 text-sm font-medium">Create New Gig</button>}
+        {data?.length>0 && <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl py-2 px-3 text-sm font-medium" onClick={()=>navigate("/addgigs")}>Create New Gig</button>}
       </div>
       {isLoading && <Loader/>}
       {data?.length === 0 && (

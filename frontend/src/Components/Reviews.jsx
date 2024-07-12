@@ -46,6 +46,7 @@ const Reviews = ({ gigId }) => {
     if (!reviewData.desc.trim() || reviewData.star <= 0) {
       // Display an error message to the user
       toast.error("Please provide a review and a star rating.");
+      return
     }
     try {
       const res = await axios.post(

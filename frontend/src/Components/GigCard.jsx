@@ -33,7 +33,7 @@ const GigCard = ({ item }) => {
         <div className="shadow-lg border border-gray-300 rounded-lg p-1 rounded-b-lg h-full cursor-pointer flex flex-col">
         <img
             src={item.cover}
-            className="object-cover h-[270px] w-full"
+            className="object-cover min-h-[270px] w-full"
             alt=""
           />
           {!isPending && !error &&  (
@@ -45,7 +45,7 @@ const GigCard = ({ item }) => {
           )}
          
           <div className="text-sm px-4 flex flex-col justify-between h-full">
-            <p className="font-semibold text-lg">{item.title}</p>
+            <p className="font-semibold text-lg">{item.title.length>40 ? `${item.title.substr(0,40)}...` : item.title }</p>
             <p className="pb-2">{item.desc.length>50 ? `${item.desc.substr(0,50)}...` : item.desc } </p>
             <div className="flex justify-between items-center pb-2">
               <div className="flex items-center justify-center gap-2">
@@ -55,10 +55,6 @@ const GigCard = ({ item }) => {
             <p className="font-semibold text-lg text-blue-900">₹{item.price} INR</p>
             </div>
           </div>
-          {/* <hr /> */}
-          {/* <div className="flex justify-between px-4 py-2"> */}
-            {/* <img src="/images/heart.png" alt="" /> */}
-          {/* </div> */}
         </div>
       </Link>
     </div>

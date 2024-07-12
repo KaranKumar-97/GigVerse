@@ -22,7 +22,6 @@ const Gig = () => {
   const gigId = param.id;
   const currentUser = useUserStore((state) => state.currentUser);
 
-
   const { isPending, error, data } = useQuery({
     queryKey: ["gig"],
     queryFn: () =>
@@ -53,12 +52,20 @@ const Gig = () => {
         }),
   });
 
-  const handleOrder =()=>{
-
-      axios.post(`${import.meta.env.VITE_BACKEND_URL}/orders/${gigId}`,{buyerName:currentUser.fullname,sellerName:dataUser.fullname},{withCredentials:true})
-      .then((res)=>res.data).then(()=>toast.success("Order Placed Successfully")).then(()=>navigate("/orders"))
-      .catch((error)=>{toast.error(error?.response?.data?.error || error.message)})
-  }
+  const handleOrder = () => {
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/orders/${gigId}`,
+        { buyerName: currentUser.fullname, sellerName: dataUser.fullname },
+        { withCredentials: true }
+      )
+      .then((res) => res.data)
+      .then(() => toast.success("Order Placed Successfully"))
+      .then(() => navigate("/orders"))
+      .catch((error) => {
+        toast.error(error?.response?.data?.error || error.message);
+      });
+  };
 
   // useEffect(() => {
   //   // Example condition: Only log if data has more than 0 items
@@ -165,46 +172,49 @@ const Gig = () => {
             </div>
 
             <div className="w-[90vw] md:w-[30vw] border border-gray-400 rounded-lg p-6 h-auto mt-10  block md:hidden">
-            <div className="flex justify-between text-xl mb-5">
-              <p className="font-semibold">{data.shortTitle}</p>
-              <p>₹{data.price} INR</p>
-            </div>
-            <p>{data.shortDesc}</p>
-            <div className="flex justify-between my-5">
-              <div className="flex items-center gap-2">
-                <img
-                  src="/images/clock.png"
-                  className="w-[20px] h-[20px]"
-                  alt=""
-                />
-                <span>{data.deliveryTime} Days Delivery</span>
+              <div className="flex justify-between text-xl mb-5">
+                <p className="font-semibold">{data.shortTitle}</p>
+                <p>₹{data.price} INR</p>
               </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/images/recycle.png"
-                  className="w-[20px] h-[20px]"
-                  alt=""
-                />
-                <span>{data.revision} Revisions</span>
-              </div>
-            </div>
-
-            {data.features.length > 0 &&
-              data.features?.map((item, index) => (
-                <div key={index} className="flex gap-2">
+              <p>{data.shortDesc}</p>
+              <div className="flex justify-between my-5">
+                <div className="flex items-center gap-2">
                   <img
-                    src="/images/greencheck.png"
+                    src="/images/clock.png"
                     className="w-[20px] h-[20px]"
                     alt=""
                   />
-                  <p>{item}</p>
+                  <span>{data.deliveryTime} Days Delivery</span>
                 </div>
-              ))}
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/images/recycle.png"
+                    className="w-[20px] h-[20px]"
+                    alt=""
+                  />
+                  <span>{data.revision} Revisions</span>
+                </div>
+              </div>
 
-            <button className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold" onClick={handleOrder}>
-              Request to Order
-            </button>
-          </div>
+              {data.features.length > 0 &&
+                data.features?.map((item, index) => (
+                  <div key={index} className="flex gap-2">
+                    <img
+                      src="/images/greencheck.png"
+                      className="w-[20px] h-[20px]"
+                      alt=""
+                    />
+                    <p>{item}</p>
+                  </div>
+                ))}
+
+              <button
+                className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold"
+                onClick={handleOrder}
+              >
+                Request to Order
+              </button>
+            </div>
 
             <div className="">
               <h1 className="text-2xl font-semibold">About this Gig</h1>
@@ -212,12 +222,18 @@ const Gig = () => {
             </div>
 
             <div>
-              <h1 className="text-2xl font-semibold">What's included</h1>
-              <ul className="flex flex-col ml-5 justify-between list-disc">
-                <li>High Resolution</li>
-                <li>Source File</li>
-                <li>Commercial Use</li>
-              </ul>
+              {data.features.length > 0 && (
+                <>
+                  <p className="text-2xl font-semibold">Features</p>
+
+                  {data.features?.map((item, index) => (
+                    <div key={index} className="flex gap-2">
+                      <li>{item}</li>
+                    </div>
+                  ))}
+                </>
+              )}
+             
             </div>
 
             {!isPendingUser && !errorUser && (
@@ -329,7 +345,10 @@ const Gig = () => {
                 </div>
               ))}
 
-            <button className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold" onClick={handleOrder}>
+            <button
+              className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold"
+              onClick={handleOrder}
+            >
               Request to Order
             </button>
           </div>

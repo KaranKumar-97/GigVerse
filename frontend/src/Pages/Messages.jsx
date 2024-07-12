@@ -14,84 +14,104 @@ const Messaages = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["conversations"],
     queryFn: () =>
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}/conversations`,{withCredentials:true}).then((res) => res.data
-      ).catch((error) => {
-        toast.error(error.message);
-        throw error;
-      }),
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/conversations`, {
+          withCredentials: true,
+        })
+        .then((res) => res.data)
+        .catch((error) => {
+          toast.error(error.message);
+          throw error;
+        }),
   });
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (id) => {
-      return axios.put(`${import.meta.env.VITE_BACKEND_URL}/conversations/${id}`,{},{withCredentials:true});
+      return axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/conversations/${id}`,
+        {},
+        { withCredentials: true }
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["conversations"]);
     },
     onError: (error) => {
-      toast.error(error.message)
-    }
+      toast.error(error.message);
+    },
   });
 
   const handleRead = (id) => {
     mutate(id);
   };
 
-
-  useEffect(() => {console.log(data)}, []);
   return (
     <div className="messages">
-    {isPending ? (
-      "loading"
-    ) : error ? (
-      "error"
-    ) : (
-      <div className="w-[90%] mx-auto ">
-        <div className="font-bold text-4xl my-10 text-blue-900">
-          <h1>Messages</h1>
-        </div>
-        <table className="w-[90%] mx-auto ">
-          <tr>
-            <th className="bg-blue-900 text-white p-3 border-2 rounded-l-xl border-white">{currentUser.isSeller ? "Buyer" : "Seller"}</th>
-            <th className="bg-blue-900 text-white p-3 border-2 border-white">Last Message</th>
-            <th className="bg-blue-900 text-white p-3 border-2 border-white">Date</th>
-            <th className="bg-blue-900 text-white p-3 border-2 rounded-r-xl border-white">Action</th>
-          </tr>
-          {data.map((c) => (
-            <tr
-              className={
-                ((currentUser.isSeller && !c.readBySeller) ||
-                  (!currentUser.isSeller && !c.readByBuyer)) &&
-                "bg-green-100"
-              }
-              key={c.id}
-            >
-              <td className="border-2 p-3 text-center">{currentUser.isSeller ? c.buyerId : c.sellerId}</td>
-              <td className="border-2 p-3 text-center">
-                <Link to={`/message/${c.id}`} className="link">
-                  {c?.lastMessage?.substring(0, 40)}...
-                </Link>
-              </td>
-              <td className="border-2 p-3 text-center">{moment(c.updatedAt).fromNow()}</td>
-              <td className="border-2 p-3 text-center">
-                {((currentUser.isSeller && !c.readBySeller) ||
-                  (!currentUser.isSeller && !c.readByBuyer)) ? (
-                  <button onClick={() => handleRead(c.id)} className="bg-green-500 p-1 rounded-xl">
-                    Mark as Read
-                  </button>
-                ) :(
-                  <Link to={`/message/${c.id}`} className="bg-blue-800 p-2 rounded-xl text-white">
-                  Open Chat
-                </Link>
-                )}
-              </td>
-            </tr>
-          ))}
-        </table>
-      </div>
-    )}
-  </div>
-  )
-}
+      {isPending ? (
+        "loading"
+      ) : error ? (
+        "error"
+      ) : (
+        <div className="w-[90%] mx-auto ">
+          <div className="font-bold text-4xl my-10 text-blue-900">
+            <h1>Messages</h1>
+          </div>
 
-export default Messaages
+          <div className="flex flex-col items-center p-4 bg-gray-100 min-h-screen ">
+            <div className="w-full max-w-4xl ">
+              {data.map((c) => (
+                <div
+                  key={c.id}
+                  className="flex items-center justify-between p-4 mb-4 bg-white rounded-lg shadow-lg"
+                >
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 mr-4">
+                      <img
+                        className="w-12 h-12 rounded-full"
+                        src="/images/noavatar.jpg"
+                        alt="Profile"
+                      />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-lg text-gray-900">
+                        {currentUser.isSeller ? c?.buyerName : c.sellerName}
+                      </div>
+                      <div>{c?.lastMessage?.substring(0, 40)}...</div>
+                      <div className="text-sm text-gray-500">
+                        {moment(c.updatedAt).fromNow()}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    {(currentUser.isSeller && !c.readBySeller) ||
+                    (!currentUser.isSeller && !c.readByBuyer) ? (
+                      <button
+                        onClick={() => handleRead(c.id)}
+                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+                      >
+                        Mark as Read
+                      </button>
+                    ) : (
+                      <Link
+                        to={{
+                          pathname: `/message/${c.id}`,
+                        }}
+                        className="inline-block bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+                      >
+                        Open Chat
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      
+    </div>
+  );
+};
+
+export default Messaages;

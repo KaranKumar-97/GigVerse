@@ -56,7 +56,8 @@ const gigSchema = new Schema(
         required:true,
     },
     features:{
-        Type:[String],
+      type:[String],
+      required:true,
     },
     sales:{
         type:Number,

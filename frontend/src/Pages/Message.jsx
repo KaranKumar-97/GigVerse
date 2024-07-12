@@ -1,5 +1,5 @@
-import React,{useRef,useEffect} from 'react'
-import { useParams,Link } from 'react-router-dom';
+import React,{useState,useRef,useEffect} from 'react'
+import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -7,15 +7,26 @@ import { TextField } from '@mui/material';
 import useUserStore from '../Store/useUserStore';
 
 
-
 const Message = () => {
   const {id} = useParams();
   const queryClient = useQueryClient();
   const messageInputRef = useRef(null);
-  const messagesEndRef = useRef(null); // Step 1: Ref for scrolling to bottom
+  const messagesEndRef = useRef(null); 
 
   const currentUser = useUserStore((state) => state.currentUser);
-  
+  const param= useParams();
+ 
+  const [buyerName, setBuyerName] = useState('');
+  const [sellerName, setSellerName] = useState('');
+
+  useEffect(() => {
+
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/conversations/single/${param.id}`,{withCredentials:true}).then((res) => {setBuyerName(res.data.buyerName);
+      setSellerName(res.data.sellerName)}).catch((error) => console.log(error)) 
+  },[])
+
+
+
 
   const { isPending, error, data } = useQuery({
     queryKey: ["messages"],
@@ -40,6 +51,10 @@ const Message = () => {
   });
 
   const handleSubmit = () => {
+    if(messageInputRef.current.value===''){
+      toast.error('Please enter a message')
+      return
+    }
   mutate({
       conversationId: id,
       desc: messageInputRef.current.value
@@ -51,7 +66,7 @@ const Message = () => {
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      // messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -62,9 +77,11 @@ const Message = () => {
 
   return (
     <div className=" w-[90%] mx-auto">
-    <div className="">
-      <span className="breadcrumbs">
-        <Link to="/messages">Messages</Link> {">"} {currentUser.fullname} {">"} Conversation
+    <div className="mt-10">
+      <span className='font-semibold text-xl text-blue-800'>
+        <Link to="/messages">
+        You are chatting with {currentUser.isSeller ? `Buyer ${buyerName}` :`Seller ${sellerName}`}
+        </Link>
       </span>
       {isPending ? (
         "loading"
@@ -84,7 +101,7 @@ const Message = () => {
         {data.map((m) => (
           <div className={`${m.userId === currentUser._id ? "" : "flex-row-reverse self-end"} flex gap-5 max-w-[600px] text-lg`} key={m._id}>
             <img
-              src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
+              src="/images/noavatar.jpg"
               alt=""
               className="w-10 h-10 rounded-full object-cover"
             />

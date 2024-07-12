@@ -1,5 +1,6 @@
 import Order from '../models/order.model.js'
 import Gig from '../models/gig.model.js'
+import User from '../models/user.model.js';
 
 export const createOrder = async (req, res,next) => {
     try {
@@ -24,6 +25,8 @@ export const createOrder = async (req, res,next) => {
             sellerName:req.body.sellerName,
             payment_intent:"temporary string"
         })
+
+        await User.findByIdAndUpdate(gig.userId, { $inc: { orders: 1 } });
 
         await order.save();
         res.status(200).json(order)

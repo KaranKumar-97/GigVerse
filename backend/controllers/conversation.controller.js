@@ -6,6 +6,8 @@ export const createConversation = async (req, res, next) => {
       id: req.isSeller ? req.userId + req.body.to : req.body.to + req.userId,
       sellerId: req.isSeller ? req.userId : req.body.to,
       buyerId: req.isSeller ? req.body.to : req.userId,
+      buyerName: req.body.buyerName,
+      sellerName: req.body.sellerName,
       readBySeller: req.isSeller,
       readByBuyer: !req.isSeller,
     });
