@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import GigCard from "../Components/GigCard";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery,useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import Loader from "../Components/Loader.jsx";
@@ -26,9 +26,10 @@ const Gigs = () => {
   const minRef = useRef();
   const maxRef = useRef();
 
+
   const location = useLocation();
 
-  const { isPending, error, data,refetch } = useQuery({
+  const { isFetching, error, data, refetch } = useQuery({
     queryKey: ["gigs"],
     queryFn: () =>
       axios
@@ -39,12 +40,11 @@ const Gigs = () => {
           throw error;
         }),
   });
-
+  
+    useEffect(() => {
+      refetch();
+    }, [sortby, location.search]);
  
-
-  useEffect(() => {
-    refetch();
-  }, [sortby, location.search]);
 
   const navigate = useNavigate();
 
@@ -66,7 +66,7 @@ const Gigs = () => {
   const handleCategory= (value)=>  {
     setCategoryValue(value);
 
-    if(value==="All") navigate(`/gigs?category?`);
+    if(value==="All") navigate(`/gigs?category=`);
     else navigate(`/gigs?category=${value}`);
   }
 
@@ -170,7 +170,7 @@ const Gigs = () => {
         </div>
       </div>
 
-      {isPending && <Loader />}
+      {isFetching && <Loader />}
       {error && (
        <div className="w-full h-[50vh] flex flex-col gap-6 justify-center items-center">
        <p className="text-blue-900 text-4xl font-bold">Oops! Soemthing Went Wrong</p>
@@ -179,11 +179,9 @@ const Gigs = () => {
      </div>
       )}
 
-      {isPending ? "" : error ? "" : data.length==0 ? (
+      {isFetching ? "" : error ? "" : data.length==0 ? (
         <div className="w-full h-[50vh] flex flex-col gap-6 justify-center items-center">
-          <p className="text-blue-900 text-4xl font-bold">No Gigs in this Category / Filter</p>
-     
-      
+          <p className="text-blue-900 text-4xl font-bold">No Gigs in this Category / Filter</p> 
         </div>
       
       ) :  (

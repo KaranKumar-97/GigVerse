@@ -13,64 +13,83 @@ import Message from "./Pages/Message";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 
-
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
-} from '@tanstack/react-query'
+} from "@tanstack/react-query";
 import useUserStore from "./Store/useUserStore";
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import Loader from "./Components/Loader";
 import toast from "react-hot-toast";
 
 function App() {
-  const login=useUserStore((state)=>state.login);
+  const login = useUserStore((state) => state.login);
   const userLoaded = useUserStore((state) => state.userLoaded);
 
-  useEffect(()=>{
-    const accessToken = Cookies.get('accessToken');
+  useEffect(() => {
+    const accessToken = Cookies.get("accessToken");
 
     if (accessToken) {
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/fetchuser`, {withCredentials: true})
-      .then((res) => res.data).then((user) => {
-        login(user)
-        useUserStore.setState({ userLoaded: true })
-      }).catch((error) => {
-        // console.log(error);
-        toast.error("Server not responding");
-        useUserStore.setState({ userLoaded: false });
-      });
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/users/fetchuser`, {
+          withCredentials: true,
+        })
+        .then((res) => res.data)
+        .then((user) => {
+          login(user);
+          useUserStore.setState({ userLoaded: true });
+        })
+        .catch((error) => {
+          // console.log(error);
+          toast.error("Server not responding");
+          useUserStore.setState({ userLoaded: false });
+        });
+    } else {
+      
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/test`)
+        .then((response) => {
+          if (response.status === 200) {
+ 
+            useUserStore.setState({ userLoaded: true });
+          } else {
+            useUserStore.setState({ userLoaded: false });
+            toast.error("Test API not responding with 200");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          useUserStore.setState({ userLoaded: false });
+          toast.error("Test API request failed");
+        });
     }
-    else{
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}/test`).then(useUserStore.setState({ userLoaded: true })).catch((error) => {console.log(error); useUserStore.setState({ userLoaded: false })})
-    }
-  },[login])
+  }, [login]);
 
-
-  
   if (!userLoaded) {
-    return <div className="w-full h-[100vh] flex justify-center items-center">
-      <Loader />
-    </div>; 
+    return (
+      <div className="w-full h-[90vh] flex flex-col  justify-center items-center">
+        <Loader />
+        <p className="text-blue-800 text-lg">Loading Data from Backend Server</p>
+      </div>
+    );
   }
 
-
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
   const Layout = () => {
     return (
       <QueryClientProvider client={queryClient}>
-      <div className="font-montserrat">
-        <Navbar />
+        <div className="font-montserrat">
+          <Navbar />
 
-        <div className="pt-[5rem]">
-          <Outlet />
-          <Footer />
+          <div className="pt-[5rem]">
+            <Outlet />
+            <Footer />
+          </div>
         </div>
-      </div>
       </QueryClientProvider>
     );
   };
@@ -88,8 +107,7 @@ function App() {
         { path: "/messages", element: <Messages /> },
         { path: "/message/:id", element: <Message /> },
         { path: "/login", element: <Login /> },
-        { path: "/register", element: <Register />}
-
+        { path: "/register", element: <Register /> },
       ],
     },
   ]);

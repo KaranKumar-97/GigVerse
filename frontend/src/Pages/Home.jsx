@@ -52,6 +52,10 @@ const Home = () => {
 
   const categories = [
     {
+      title:"All",
+      img:"/category/all.png"
+    },
+    {
       title: "Graphics & Design",
       img: "/category/design.png",
     },
@@ -98,7 +102,7 @@ const Home = () => {
           </h1>
         <div className="flex justify-center gap-10 flex-wrap">
           {categories.map((category,i) => (
-             <Link to={`/gigs?category=${category.title}`} key={i} className="w-48 h-44 flex flex-col gap-3 justify-center items-center border rounded-xl p-4 bg-gray-100 shadow-xl hover:bg-white transform hover:scale-[102%] transition-all duration-300 ease-in-out">
+             <Link to={`/gigs?category=${category.title === "All" ? "" : category.title}`} key={i} className="w-48 h-44 flex flex-col gap-3 justify-center items-center border rounded-xl p-4 bg-gray-100 shadow-xl hover:bg-white transform hover:scale-[102%] transition-all duration-300 ease-in-out">
              <img
                src={category.img}
                alt=""
