@@ -22,7 +22,6 @@ import {
 } from "@tanstack/react-query";
 import useUserStore from "./Store/useUserStore";
 import axios from "axios";
-import Cookies from "js-cookie";
 import Loader from "./Components/Loader";
 import toast from "react-hot-toast";
 
@@ -31,42 +30,37 @@ function App() {
   const userLoaded = useUserStore((state) => state.userLoaded);
 
   useEffect(() => {
-    const accessToken = Cookies.get("accessToken");
-
-    if (accessToken) {
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/users/fetchuser`, {
-          withCredentials: true,
-        })
-        .then((res) => res.data)
-        .then((user) => {
-          login(user);
+    const fetchTestData = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/test`);
+        if (response.status === 200) {
           useUserStore.setState({ userLoaded: true });
-        })
-        .catch((error) => {
-          // console.log(error);
-          toast.error("Server not responding");
+        } else {
           useUserStore.setState({ userLoaded: false });
+          toast.error("Backend Server Not Responding");
+        }
+      } catch (error) {
+        console.log(error);
+        useUserStore.setState({ userLoaded: false });
+        toast.error("Test API request failed");
+      }
+    };
+  
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/fetchuser`, {
+          withCredentials: true,
         });
-    } else {
-      
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/test`)
-        .then((response) => {
-          if (response.status === 200) {
- 
-            useUserStore.setState({ userLoaded: true });
-          } else {
-            useUserStore.setState({ userLoaded: false });
-            toast.error("Test API not responding with 200");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          useUserStore.setState({ userLoaded: false });
-          toast.error("Test API request failed");
-        });
-    }
+        const user = response.data;
+        login(user);
+        useUserStore.setState({ userLoaded: true });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchTestData();
+    fetchUser();
   }, [login]);
 
   if (!userLoaded) {
