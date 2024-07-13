@@ -22,7 +22,7 @@ const Gigs = () => {
     });
   }, []);
 
-  const [sortby, setSortby] = useState("price");
+  const [sortby, setSortby] = useState("createdAt");
   const minRef = useRef();
   const maxRef = useRef();
 

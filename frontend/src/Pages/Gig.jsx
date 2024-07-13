@@ -8,6 +8,7 @@ import Loader from "../Components/Loader";
 import Reviews from "../Components/Reviews";
 import useUserStore from "../Store/useUserStore";
 import moment from "moment";
+import { RxCheck } from "react-icons/rx";
 
 const Gig = () => {
   const navigate = useNavigate();
@@ -203,12 +204,11 @@ const Gig = () => {
 
               {data.features.length > 0 &&
                 data.features?.map((item, index) => (
-                  <div key={index} className="flex gap-2">
-                    <img
-                      src="/images/greencheck.png"
-                      className="w-[20px] h-[20px]"
-                      alt=""
-                    />
+                  <div key={index} className="flex items-center gap-2">
+          
+                  <RxCheck size={25}  className="text-blue-900"/>
+
+
                     <p>{item}</p>
                   </div>
                 ))}
@@ -283,22 +283,23 @@ const Gig = () => {
                   </div>
                 </div>
                   <hr className="mt-5"/>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 my-2 gap-2 text-left">
-                    <div className="flex flex-row md:flex-col md:justify-center items-center gap-2">
-                      <p>From : </p>
-                      <p className="font-semibold">India</p>
-                    </div>
-                    <div className="flex flex-row md:flex-col md:justify-center items-center gap-3">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 my-2 gap-2 text-left">
+                   
+                    <div className="flex  items-center gap-3">
                       <p className="title">Member since :</p>
                       <p className="font-semibold">{moment(dataUser.createdAt).format('LL')}</p>
                     </div>
-                    <div className="flex flex-row md:flex-col md:justify-center items-center gap-3">
-                      <p className="title">Total Orders :</p>
+                    <div className="flex items-center gap-3">
+                      <p className="whitespace-nowrap">Total Orders Done:</p>
                       <p className="font-semibold">{dataUser?.orders || 0}</p>
                     </div>
-                    <div className="flex flex-row md:flex-col md:justify-center md:items-center gap-3">
-                      <p className="title">Avg. response time :</p>
-                      <p className="font-semibold">4 hours</p>
+                    <div className="flex md:items-center gap-3">
+                      <p className="whitespace-nowrap">Expertise : </p>
+                      <p className="font-semibold">{dataUser.expertise}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <p>contact : </p>
+                      <p className="font-semibold">{dataUser.email}</p>
                     </div>
                     </div>
                   <hr className="my-2" />
@@ -340,12 +341,9 @@ const Gig = () => {
 
             {data.features.length > 0 &&
               data.features?.map((item, index) => (
-                <div key={index} className="flex gap-2">
-                  <img
-                    src="/images/greencheck.png"
-                    className="w-[20px] h-[20px]"
-                    alt=""
-                  />
+                <div key={index} className="flex items-center gap-2">
+                  <RxCheck size={25}  className="text-blue-900"/>
+
                   <p>{item}</p>
                 </div>
               ))}
