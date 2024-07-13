@@ -60,7 +60,10 @@ const Messaages = () => {
 
           <div className="flex flex-col items-center p-4">
             <div className="w-full max-w-4xl ">
-              {data.map((c) => (
+              {data.length === 0 && (
+                <div className="font-bold text-3xl flex flex-col gap-5 text-center justify-center items-center h-[40vh] text-red-700">You Dont have any Messages yet</div>
+              )}
+              {data.length>0 && data.map((c) => (
                 <div
                   key={c.id}
                   className="flex flex-co items-center justify-between p-4 mb-4 border rounded-lg shadow-xl"

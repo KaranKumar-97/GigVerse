@@ -14,7 +14,7 @@ export const createOrder = async (req, res,next) => {
         if(req.isSeller){
             return res.status(400).json({error:"Sellers cannot buy a gigs"})
         }
-        
+
         const order=new Order({
             gigId:gig._id,
             img:gig.cover,
@@ -28,6 +28,8 @@ export const createOrder = async (req, res,next) => {
         })
 
         await User.findByIdAndUpdate(gig.userId, { $inc: { orders: 1 } });
+        await Gig.findByIdAndUpdate(gig._id, { $inc: { sales: 1 } });
+
 
         await order.save();
         res.status(200).json(order)
