@@ -45,7 +45,7 @@ const Register = () => {
     if (registerData.isSeller) {
       if (!registerData.expertise)
         tempErrors.expertise = "Expertise is required";
-      if (!registerData.description)
+      if (!registerData.desc)
         tempErrors.desc = "Description is required";
     }
 
