@@ -86,7 +86,7 @@ const Gigs = () => {
 // }
 
   return (
-    <div className="w-[90%] mx-auto">
+    <div className="w-[95%] md:w-[90%] mx-auto -mt-16 sm:mt-0">
       <div className="md:mt-10 mb-8 space-y-3">
         <p className="flex gap-2">
           <img src="/images/home.svg" alt="" /> {"/  "}GigVerse {">"} {location.search.split("=")[1] ? 
@@ -149,11 +149,11 @@ const Gigs = () => {
             </div>
         </div>
 
-        <div className="border w-[80%] lg:w-[15%]">
+        <div className="w-[80%] lg:w-[15%]">
           <FormControl fullWidth >
-            <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+            <InputLabel id="sortby">Sort By</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
+              labelId="sortby"
               id="demo-simple-select"
               value={sortby}
               label="Sort By"

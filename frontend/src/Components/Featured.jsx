@@ -28,7 +28,7 @@ const Featured = () => {
               <FaSearch />
             </button>
           </div>
-          <div className="flex flex-wrap gap-2 text-sm">
+          {/* <div className="flex flex-wrap gap-2 text-sm">
             <span>Popular :</span>
             <span className="border-2 border-gray-400 rounded-xl px-2 cursor-pointer hover:bg-white hover:text-black">
               AI
@@ -42,7 +42,7 @@ const Featured = () => {
             <span className="border-2 border-gray-400 rounded-xl px-2 cursor-pointer hover:bg-white hover:text-black">
               content Writing
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
       <img

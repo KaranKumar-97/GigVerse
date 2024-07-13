@@ -29,12 +29,12 @@ const GigCard = ({ item }) => {
 
 
   return (
-    <div className="w-[270px] my-5 mx-4 transition-transform duration-300 ease-in-out hover:scale-[102%] hover:shadow-2xl">
+    <div className="w-[320px] sm:w-[280px] my-5 mx-4 transition-transform duration-300 ease-in-out hover:scale-[102%] hover:shadow-2xl">
       <Link to={`/gig/${item._id}`}>
         <div className="shadow-lg border border-gray-300 rounded-lg p-1 rounded-b-lg h-full cursor-pointer flex flex-col">
         <img
             src={item.cover}
-            className="object-cover h-[270px]  w-full"
+            className="object-cover h-[240px]  w-full"
             alt=""
           />
           {!isPending && !error &&  (

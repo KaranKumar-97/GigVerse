@@ -84,7 +84,7 @@
   .loader2::before {
     content: '';  
     position: absolute;
-    right: 70px;
+    right: 68px;
     bottom: 20px;
     height: 28px;
     width: 5.15px;

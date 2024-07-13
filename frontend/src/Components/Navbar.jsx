@@ -81,7 +81,7 @@ const Navbar = () => {
   return (
     <div
       className={
-        "z-50 transition-all ease-in-out duration-500 sm:fixed w-full h-[5rem] border-red-800" +
+        "z-50 transition-all ease-in-out duration-500 sm:fixed w-full h-[5rem]" +
         (active || pathname !== "/"
           ? " text-gray-700 bg-white"
           : " bg-[#1A1B1D] text-white ")
@@ -89,11 +89,11 @@ const Navbar = () => {
     >
       <Toaster />
       <div className="flex justify-between max-w-[90%] mx-auto p-4">
-        <div className="text-3xl font-bold ">
-          <Link to="/">
+        <div className="text-xl sm:text-3xl font-bold ">
+          <Link to="/"> 
             <span className="">GigVerse</span>
           </Link>
-          <span className="text-4xl text-blue-400">.</span>
+          <span className="text-2xl sm:text-4xl text-blue-400">.</span>
         </div>
 
         <div className="flex items-center gap-5 font-semibold">
@@ -115,7 +115,7 @@ const Navbar = () => {
           {currentUser && (
             <div className="relative">
               <div
-                className="flex items-center gap-5 cursor-pointer"
+                className="flex items-center gap-2 sm:gap-5 cursor-pointer"
                 onClick={(event) => {
                   setOpen(!open);
                 }}
@@ -126,9 +126,9 @@ const Navbar = () => {
                 <img
                   src={currentUser.img || "/images/noavatar.jpg"}
                   alt=""
-                  className="w-12 h-12 border-2 object-cover rounded-full"
+                  className="w-10 h-10 sm:w-12 sm:h-12 border-2 object-cover rounded-full"
                 />
-                <span>{currentUser.fullname}</span>
+                <span className="text-sm sm:text-base">{currentUser.fullname}</span>
               </div>
 
               {open && (

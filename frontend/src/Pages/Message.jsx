@@ -28,7 +28,7 @@ const Message = () => {
 
 
 
-  const { isPending, error, data } = useQuery({
+  const { isLoading, error, data } = useQuery({
     queryKey: ["messages"],
     queryFn: () =>
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/messages/${id}`,{withCredentials:true}).then((res) => res.data
@@ -76,19 +76,19 @@ const Message = () => {
 
 
   return (
-    <div className=" w-[90%] mx-auto">
+    <div className="w-[92%] mx-auto -mt-16 sm:mt-0">
     <div className="mt-10">
-      <span className='font-semibold text-xl text-blue-800'>
+      <span className='font-semibold sm:text-xl text-blue-800'>
         <Link to="/messages">
         You are chatting with {currentUser.isSeller ? `Buyer ${buyerName}` :`Seller ${sellerName}`}
         </Link>
       </span>
-      {isPending ? (
+      {isLoading ? (
         "loading"
       ) : error ? (
         "error"
       ) : (
-        <div className="w-[80%] mx-auto my-12 px-12 py-20 flex flex-col gap-5 h-[500px] overflow-y-auto border-4 rounded-xl p-4" 
+        <div className="md:w-[80%] mx-auto my-12 px-2 md:px-12 py-20 flex flex-col gap-5 h-[500px] overflow-y-auto border-[3px] rounded-xl p-4" 
         style={{
           scrollbarWidth: 'thin', /* For Firefox */
           scrollbarColor: 'darkgray transparent', /* For Firefox */
@@ -99,13 +99,16 @@ const Message = () => {
         ref={messagesEndRef}
         >
         {data.map((m) => (
-          <div className={`${m.userId === currentUser._id ? "" : "flex-row-reverse self-end"} flex gap-5 max-w-[600px] text-lg`} key={m._id}>
+          <div className={`${m.userId === currentUser._id ? "" : "flex-row-reverse self-end"} flex gap-5 max-w-[400px] text-xs sm:text-sm  md:text-base`} key={m._id}>
             <img
               src="/images/noavatar.jpg"
               alt=""
               className="w-10 h-10 rounded-full object-cover"
             />
-            <p className={`${m.userId === currentUser._id ? "bg-blue-400 text-white rounded-tl-lg rounded-br-lg rounded-bl-lg" : "bg-[#f4f1f1] text-gray-500 rounded-tr-lg rounded-br-lg rounded-bl-lg"} max-w-[500px] p-5 font-light`}>
+            <p className={`${m.userId === currentUser._id ? 
+              "bg-blue-900 text-white rounded-tl-lg rounded-br-lg rounded-bl-lg" : 
+              "bg-gray-700 text-white rounded-tr-lg rounded-br-lg rounded-bl-lg "} 
+              max-w-[200px] md:max-w-[500px] p-5 whitespace-pre-line break-words overflow-wrap break-word`}>
               {m.desc}
             </p>
           </div>
@@ -113,7 +116,7 @@ const Message = () => {
         </div>
       )}
       <hr />
-      <div className='flex gap-10 my-10 max-w-[60%] mx-auto items-center'>
+      <div className='flex gap-2 md:gap-10 my-10 md:max-w-[60%] mx-auto items-center'>
         <TextField inputRef={messageInputRef} multiline fullWidth type="text" placeholder="write a message" label="Your message" />
         <button className="px-6 py-4 bg-blue-900 text-white rounded-lg"  onClick={handleSubmit} >Send</button>
       </div>

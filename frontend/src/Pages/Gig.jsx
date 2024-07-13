@@ -23,8 +23,8 @@ const Gig = () => {
   const gigId = param.id;
   const currentUser = useUserStore((state) => state.currentUser);
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ["gig"],
+  const { isFetching, error, data } = useQuery({
+    queryKey: ["gig", gigId],
     queryFn: () =>
       axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/gigs/single/${gigId}`)
@@ -37,10 +37,9 @@ const Gig = () => {
   });
 
   const {
-    isPending: isPendingUser,
+    isFetching: isFetchingUser,
     error: errorUser,
     data: dataUser,
-    refetch : refetchUser
   } = useQuery({
     queryKey: ["user", data?.userId],
     queryFn: () =>
@@ -95,7 +94,7 @@ const Gig = () => {
 
   return (
     <div className="w-[90%] mx-auto flex gap-6">
-      {isPending && (
+      {isFetching && (
         <div className=" w-full h-[80vh] flex justify-center items-center">
           <Loader />
         </div>
@@ -116,7 +115,7 @@ const Gig = () => {
         </div>
       )}
 
-      {!isPending && !error && (
+      {!isFetching && !error && (
         <div className="flex flex-col md:flex-row gap-10 items-start">
           {/* left */}
           <div className="md:mt-10 mb-8 space-y-3 w-[90vw] md:w-[58vw]">
@@ -127,13 +126,13 @@ const Gig = () => {
 
             <h1 className="font-bold text-2xl">{data.title}</h1>
 
-            {isPendingUser && (
+            {isFetchingUser && (
               <>
                 <p className="py-5">Loading user Info...</p>
               </>
             )}
 
-            {!isPendingUser && (
+            {!isFetchingUser && (
               <div className="flex items-center gap-2">
                 <img
                   src={dataUser.img || "/images/noavatar.jpg"}
@@ -242,16 +241,20 @@ const Gig = () => {
              
             </div>
 
-            {!isPendingUser && !errorUser && (
+            {!isFetchingUser && !errorUser && (
               <div>
                 <h1 className="text-2xl font-bold my-8">About the Seller</h1>
+              
+                <div className="border border-gray-400 rounded-lg p-6 my-10">
                 <div className="flex items-center gap-8">
                   <img
                     src={dataUser.img || `/images/noavatar.jpg`}
-                    className="w-[120px] h-[120px] border-2 object-cover rounded-full"
+                    className="w-[90px] h-[90px] sm:w-[120px] sm:h-[120px] border-2 object-cover rounded-full"
                     alt=""
                   />
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col lg:flex-row justify-between lg:w-full gap-4 lg:items-center">
+                    <div className="space-y-4">
+
                     <p className="text-xl font-semibold">{dataUser.fullname}</p>
 
                     <div className="flex gap-1">
@@ -272,27 +275,29 @@ const Gig = () => {
                         </>
                       )}
                     </div>
-                    {/* <button className="px-4 py-2 border border-gray-800 rounded-lg ">
-                      Place Order to contact me
-                    </button> */}
+                    </div>
+
+                    <button className="px-4 py-2 border border-gray-800 rounded-lg" onClick={()=>toast.error("will be available soon")}>
+                      Contact me
+                    </button>
                   </div>
                 </div>
-                <div className="border border-gray-400 rounded-lg p-6 my-10">
-                  <div className="grid grid-cols-2">
-                    <div>
-                      <p>From</p>
+                  <hr className="mt-5"/>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 my-2 gap-2 text-left">
+                    <div className="flex flex-row md:flex-col md:justify-center items-center gap-2">
+                      <p>From : </p>
                       <p className="font-semibold">India</p>
                     </div>
-                    <div>
-                      <p className="title">Member since</p>
+                    <div className="flex flex-row md:flex-col md:justify-center items-center gap-3">
+                      <p className="title">Member since :</p>
                       <p className="font-semibold">{moment(dataUser.createdAt).format('LL')}</p>
                     </div>
-                    <div>
-                      <p className="title">Total Orders Done</p>
+                    <div className="flex flex-row md:flex-col md:justify-center items-center gap-3">
+                      <p className="title">Total Orders :</p>
                       <p className="font-semibold">{dataUser?.orders || 0}</p>
                     </div>
-                    <div>
-                      <p className="title">Avg. response time</p>
+                    <div className="flex flex-row md:flex-col md:justify-center md:items-center gap-3">
+                      <p className="title">Avg. response time :</p>
                       <p className="font-semibold">4 hours</p>
                     </div>
                     </div>

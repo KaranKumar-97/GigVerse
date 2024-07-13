@@ -44,14 +44,14 @@ const Mygigs = () => {
   console.log(data);
 
   return (
-    <div className="w-[90%] mx-auto">
+    <div className="w-[90%] mx-auto -mt-16 sm:mt-0">
       <div className="font-bold flex justify-between text-4xl my-10 text-blue-900">
         <h1>My Gigs</h1>
         {data?.length>0 && <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl py-2 px-3 text-sm font-medium" onClick={()=>navigate("/addgigs")}>Create New Gig</button>}
       </div>
       {isLoading && <Loader/>}
       {data?.length === 0 && (
-        <div className="font-bold text-3xl flex flex-col gap-5 justify-center items-center h-[40vh] text-red-700">
+        <div className="font-bold text-3xl flex flex-col gap-5 text-center justify-center items-center h-[40vh] text-red-700">
           You don't have any gigs yet !
           <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl p-2">Create New Gig</button>
         </div>
