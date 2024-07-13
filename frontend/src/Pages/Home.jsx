@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Featured from "../Components/Featured.jsx";
 import Slide from "../Components/Slide.jsx";
-import { cards, projects } from "../Data.jsx";
 import Catcard from "../Components/Catcard.jsx";
 import ProjectCard from "../Components/ProjectCard.jsx";
 import axios from "axios";
