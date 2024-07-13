@@ -95,7 +95,7 @@ const Home = () => {
   return (
     <div>
       <Featured />
-      <div className="w-[90%] mx-auto">
+      <div className="w-[90%] mx-auto -mt-16 sm:mt-20  ">
           <h1 className="font-bold text-2xl my-10 text-blue-900">
             Explore Categories
           </h1>
