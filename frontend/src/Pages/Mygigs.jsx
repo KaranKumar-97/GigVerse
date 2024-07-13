@@ -12,7 +12,7 @@ const Mygigs = () => {
   const queryClient = useQueryClient();
   const navigate=useNavigate();
 
-  const { isLoading, error, data } = useQuery({
+  const { isFetching, error, data } = useQuery({
     queryKey: ["myGigs"],
     queryFn: () =>
       axios
@@ -49,7 +49,7 @@ const Mygigs = () => {
         <h1>My Gigs</h1>
         {data?.length>0 && <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl py-2 px-3 text-sm font-medium" onClick={()=>navigate("/addgigs")}>Create New Gig</button>}
       </div>
-      {isLoading && <Loader/>}
+      {isFetching && <Loader/>}
       {data?.length === 0 && (
         <div className="font-bold text-3xl flex flex-col gap-5 text-center justify-center items-center h-[40vh] text-red-700">
           You don't have any gigs yet !

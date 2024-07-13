@@ -12,7 +12,7 @@ const Messaages = () => {
 
   const queryClient = useQueryClient();
 
-  const { isLoading, error, data } = useQuery({
+  const { isFetching, error, data } = useQuery({
     queryKey: ["conversations"],
     queryFn: () =>
       axios
@@ -48,7 +48,7 @@ const Messaages = () => {
 
   return (
     <div className="-mt-16 sm:mt-0">
-      {isLoading ? (
+      {isFetching ? (
         <Loader/>
       ) : error ? (
         "error"

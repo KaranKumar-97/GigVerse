@@ -97,11 +97,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-5 font-semibold">
-          {/* <span>Fiverr Bussiness</span>
-          <span>Explore</span>
-          <span>English</span> */}
 
-          {/* {!currentUser?.isSeller && <span>Become a Seller</span>} */}
 
           {!currentUser && (
             <button

@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { TextField } from '@mui/material';
 import useUserStore from '../Store/useUserStore';
+import Loader from '../Components/Loader';
 
 
 const Message = () => {
@@ -28,7 +29,7 @@ const Message = () => {
 
 
 
-  const { isLoading, error, data } = useQuery({
+  const { isFetching, error, data } = useQuery({
     queryKey: ["messages"],
     queryFn: () =>
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/messages/${id}`,{withCredentials:true}).then((res) => res.data
@@ -83,8 +84,8 @@ const Message = () => {
         You are chatting with {currentUser.isSeller ? `Buyer ${buyerName}` :`Seller ${sellerName}`}
         </Link>
       </span>
-      {isLoading ? (
-        "loading"
+      {isFetching ? (
+        <Loader/>
       ) : error ? (
         "error"
       ) : (
