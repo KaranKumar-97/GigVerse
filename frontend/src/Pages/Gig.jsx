@@ -168,7 +168,7 @@ const Gig = () => {
                 {data.images.map((img, index) => (
                   <div className="flex items-center h-full" key={index}>
                     <img
-                      className="object-contain mx-auto  max-h-[500px]"
+                      className="object-contain mx-auto  h-[500px]"
                       src={img}
                       alt=""
                     />

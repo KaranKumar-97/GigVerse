@@ -39,8 +39,8 @@ function Footer() {
             <h2 className="font-semibold">Support</h2>
             <a href="#" className="hidden md:block">Help & Support</a>
             <a href="#" className="hidden md:block">Trust & Safety</a>
-            <a href="#" className="hidden md:block">Selling on Fiverr</a>
-            <a href="#" className="hidden md:block">Buying on Fiverr</a>
+            <a href="#" className="hidden md:block">Selling on GigVerse</a>
+            <a href="#" className="hidden md:block">Buying on GigVerse</a>
           </div>
           <hr className="block md:hidden" />
           <div className="item">
@@ -59,15 +59,15 @@ function Footer() {
           </div>
           <hr className="block md:hidden" />
           <div className="item">
-            <h2 className="font-semibold">More From Fiverr</h2>
-            <a href="#" className="hidden md:block">Fiverr Business</a>
-            <a href="#" className="hidden md:block">Fiverr Pro</a>
-            <a href="#" className="hidden md:block">Fiverr Logo Maker</a>
-            <a href="#" className="hidden md:block">Fiverr Guides</a>
+            <h2 className="font-semibold">More From GigVerse</h2>
+            <a href="#" className="hidden md:block">GigVerse Business</a>
+            <a href="#" className="hidden md:block">GigVerse Pro</a>
+            <a href="#" className="hidden md:block">GigVerse Logo Maker</a>
+            <a href="#" className="hidden md:block">GigVerse Guides</a>
             <a href="#" className="hidden md:block">Get Inspired</a>
-            <a href="#" className="hidden md:block">Fiverr Select</a>
+            <a href="#" className="hidden md:block">GigVerse Select</a>
             <a href="#" className="hidden md:block">ClearVoice</a>
-            <a href="#" className="hidden md:block">Fiverr Workspace</a>
+            <a href="#" className="hidden md:block">GigVerse Workspace</a>
             <a href="#" className="hidden md:block">Learn</a>
             <a href="#" className="hidden md:block">Working Not Working</a>
           </div>
