@@ -11,6 +11,17 @@ const Orders = () => {
   const navigate = useNavigate();
   const currentUser = useUserStore((state) => state.currentUser);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!currentUser) {
+        toast.error("Please login to access that page");
+        navigate("/");
+      }
+    }, 1000); 
+
+    return () => clearTimeout(timer);
+  }, [currentUser]);
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
     queryFn: () =>

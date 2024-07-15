@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import upload from "../utils/upload.jsx";
@@ -11,6 +11,18 @@ import axios from "axios";
 
 const Addgigs = () => {
   const currentUser = useUserStore((state) => state.currentUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!currentUser) {
+        toast.error("Please login to access that page");
+        navigate("/");
+      }
+    }, 1000); 
+
+    return () => clearTimeout(timer);
+  }, [currentUser]);
 
   const [state, dispatch] = useReducer(GigReducer, {
     ...INITIAL_STATE,
@@ -95,7 +107,6 @@ const Addgigs = () => {
     e.target[0].value = "";
   };
 
-  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 

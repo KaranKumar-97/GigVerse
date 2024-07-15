@@ -10,6 +10,4 @@ router.get("/single/:id",verifyToken,getSingleConversation);
 router.put("/:id",verifyToken,updateConversation);
 
 
-
-
 export default router

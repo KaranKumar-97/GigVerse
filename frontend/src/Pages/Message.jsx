@@ -6,15 +6,30 @@ import { toast } from "react-hot-toast";
 import { TextField } from '@mui/material';
 import useUserStore from '../Store/useUserStore';
 import Loader from '../Components/Loader';
+import { useNavigate } from 'react-router-dom';
 
 
 const Message = () => {
+  const currentUser = useUserStore((state) => state.currentUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!currentUser) {
+        toast.error("Please login to access that page");
+        navigate("/");
+      }
+    }, 1000); 
+
+    return () => clearTimeout(timer);
+  }, [currentUser]);
+
+
   const {id} = useParams();
   const queryClient = useQueryClient();
   const messageInputRef = useRef(null);
   const messagesEndRef = useRef(null); 
 
-  const currentUser = useUserStore((state) => state.currentUser);
   const param= useParams();
  
   const [buyerName, setBuyerName] = useState('');
@@ -81,7 +96,7 @@ const Message = () => {
     <div className="mt-10">
       <span className='font-semibold sm:text-xl text-blue-800'>
         <Link to="/messages">
-        You are chatting with {currentUser.isSeller ? `Buyer ${buyerName}` :`Seller ${sellerName}`}
+        You are chatting with {currentUser?.isSeller ? `Buyer ${buyerName}` :`Seller ${sellerName}`}
         </Link>
       </span>
       {isFetching ? (
@@ -102,7 +117,7 @@ const Message = () => {
         {data.map((m) => (
           <div className={`${m.userId === currentUser._id ? "" : "flex-row-reverse self-end"} flex gap-5 max-w-[400px] text-xs sm:text-sm  md:text-base`} key={m._id}>
             <img
-              src="/images/noavatar.jpg"
+              src={m.userImage}
               alt=""
               className="w-10 h-10 rounded-full object-cover"
             />

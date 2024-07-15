@@ -1,4 +1,5 @@
 import Conversation from "../models/conversation.model.js";
+import User from "../models/user.model.js";
 
 export const createConversation = async (req, res, next) => {
   try {
@@ -19,12 +20,25 @@ export const createConversation = async (req, res, next) => {
   }
 };
 
-export const getConversations = async (req, res, netx) => {
+export const getConversations = async (req, res, next) => {
   try {
     const convo = await Conversation.find(
       req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
-    ).sort({ updatedAt: -1 });
-    res.status(200).json(convo);
+    ).sort({ updatedAt: -1 })
+
+    const populatedConversations = await Promise.all(convo.map(async (convo) => {
+      const seller = await User.findById(convo.sellerId).select('fullname img'); // Assuming SellerModel is your seller model
+      const buyer = await User.findById(convo.buyerId).select('fullname img'); // Assuming BuyerModel is your buyer model
+      return {
+        ...convo.toObject(), // Convert Mongoose document to plain object
+        sellerData: seller,
+        buyerData: buyer,
+      };
+    }));
+
+    res.status(200).json(populatedConversations);
+  
+
   } catch (error) {
     next(error);
   }

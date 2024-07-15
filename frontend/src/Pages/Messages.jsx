@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -9,6 +9,18 @@ import Loader from "../Components/Loader";
 
 const Messaages = () => {
   const currentUser = useUserStore((state) => state.currentUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!currentUser) {
+        toast.error("Please login to access that page");
+        navigate("/");
+      }
+    }, 1000); 
+
+    return () => clearTimeout(timer);
+  }, [currentUser]);
 
   const queryClient = useQueryClient();
 
@@ -72,7 +84,7 @@ const Messaages = () => {
                     <div className="flex-shrink-0 mr-4">
                       <img
                         className="w-12 h-12 rounded-full"
-                        src="/images/noavatar.jpg"
+                        src={currentUser.isSeller ? c?.buyerData.img : c.sellerData.img}
                         alt="Profile"
                       />
                     </div>

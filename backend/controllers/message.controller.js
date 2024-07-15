@@ -1,5 +1,6 @@
 import Message from "../models/message.model.js";
 import Conversation from "../models/conversation.model.js";
+import User from "../models/user.model.js";
 
 export const createMessage = async (req, res, next) => {
   try {
@@ -29,8 +30,16 @@ export const getMessages = async (req, res, next) => {
   try {
     const messages = await Message.find({
       conversationId: req.params.id,
-    });
-    res.status(200).json(messages);
+    })
+    const messagesWithUserImage = await Promise.all(messages.map(async (message) => {
+      const user = await User.findOne({ _id: message.userId }).select('img');
+      return {
+        ...message.toObject(),
+        userImage: user ? user.img : null,
+      };
+    }));
+    
+    res.status(200).json(messagesWithUserImage);
   } catch (error) {
     next(error);
   }
