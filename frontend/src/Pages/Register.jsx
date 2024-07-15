@@ -84,7 +84,8 @@ const Register = () => {
 
   const handleRegister = async () => {
     if (!validateForm()) return;
-
+    
+    toast.loading("Uploading Image...");
     let imgUrl = null;
     if (image) {
       try {
