@@ -117,7 +117,7 @@ const Message = () => {
         {data.map((m) => (
           <div className={`${m.userId === currentUser._id ? "" : "flex-row-reverse self-end"} flex gap-5 max-w-[400px] text-xs sm:text-sm  md:text-base`} key={m._id}>
             <img
-              src={m.userImage}
+              src={m.userImage || "/images/noavatar.jpg"}
               alt=""
               className="w-10 h-10 rounded-full object-cover"
             />

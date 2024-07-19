@@ -84,7 +84,7 @@ const Messaages = () => {
                     <div className="flex-shrink-0 mr-4">
                       <img
                         className="w-12 h-12 rounded-full"
-                        src={currentUser.isSeller ? c?.buyerData.img : c.sellerData.img}
+                        src={(currentUser.isSeller ? c?.buyerData.img : c.sellerData.img ) || "/images/noavatar.jpg"}
                         alt="Profile"
                       />
                     </div>

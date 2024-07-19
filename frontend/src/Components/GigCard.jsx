@@ -5,7 +5,7 @@ import axios from "axios";
 import moment from "moment";
 
 const GigCard = ({ item }) => {
-  const { isPending, error, data } = useQuery({
+  const { isFetching, error, data } = useQuery({
     queryKey: [`${item.userId}`],
     queryFn: () =>
       axios
@@ -37,7 +37,7 @@ const GigCard = ({ item }) => {
             className="object-cover h-[240px]  w-full"
             alt=""
           />
-          {!isPending && !error &&  (
+          {!isFetching && !error &&  (
              <div className="text-xs flex items-center gap-3 pt-2 px-3">
              <img src={data.img || "/images/noavatar.jpg"}  className='w-[40px] h-[40px] rounded-full' alt="" />
              <p>{data?.fullname}</p>
