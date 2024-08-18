@@ -24,6 +24,7 @@ import useUserStore from "./Store/useUserStore";
 import axios from "axios";
 import Loader from "./Components/Loader";
 import toast from "react-hot-toast";
+import PaymentSuccess from "./Pages/PaymentSuccess";
 
 function App() {
   const login = useUserStore((state) => state.login);
@@ -102,6 +103,8 @@ function App() {
         { path: "/message/:id", element: <Message /> },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
+        { path: "/paymentsuccess", element: <PaymentSuccess /> },
+
       ],
     },
   ]);

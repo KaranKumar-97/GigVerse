@@ -54,44 +54,77 @@ const Gig = () => {
         }),
   });
 
-  const handleOrder = () => {
-    if(currentUser === null) {
-      toast.error("Please Login to place order")
-      return
+  const handleOrder = (orderId) => {
+    if (currentUser === null) {
+      toast.error("Please Login to place order");
+      return;
     }
     axios
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/orders/${gigId}`,
-        { buyerName: currentUser.fullname, sellerName: dataUser.fullname },
+        { buyerName: currentUser.fullname, sellerName: dataUser.fullname, orderId},
         { withCredentials: true }
       )
       .then((res) => res.data)
       .then(() => toast.success("Order Placed Successfully"))
-      .then(() => navigate("/orders"))
+      // .then(() => navigate("/orders"))
       .catch((error) => {
-        toast.error(error?.response?.data?.error || error.message );
+        toast.error(error?.response?.data?.error || error.message);
       });
   };
 
-  // useEffect(() => {
-  //   // Example condition: Only log if data has more than 0 items
-  //   if (data) {
-  //     console.log("DataUser:", data);
-  //   }
-  //   if (error) {
-  //     console.log("Error updated:", error);
-  //   }
-  // }, [dataUser, errorUser]);
 
-  // useEffect(() => {
-  //   // Example condition: Only log if data has more than 0 items
-  //   if (data) {
-  //     console.log("Data:", data);
-  //   }
-  //   if (error) {
-  //     console.log("Error updated:", error);
-  //   }
-  // }, [data, error]);
+  const checkoutHandler = async () => {
+    if (currentUser === null) {
+      toast.error("Please Login to place order");
+      return;
+    }
+
+    try {
+        const key = import.meta.env.VITE_RAZORPAY_API_KEY;
+        // create order 
+        const {data:payment} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/checkout`, { amount:data.price },{withCredentials:true});
+
+        const options = {
+            key: key,
+            amount: Number(payment.order.amount),
+            currency: "INR",
+            name: "GigVerse",
+            description: "Payment using RazorPay",
+            image: "https://raw.githubusercontent.com/KaranKumar-97/GigVerse/main/frontend/public/images/GV_fav.png",
+            order_id: payment.order.id,
+            callback_url: `${import.meta.env.VITE_BACKEND_URL}/payment/verify-payment`,
+            notes: {
+                "address": "Razorpay Corporate Office"
+            },
+            theme: {
+                "color": "#1e3a8a"
+            },
+            handler: async (response) => {
+              try {
+            const { data:res } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/verify-payment`, response, { withCredentials: true });
+            if (res.success) {
+              console.log(res)
+              handleOrder(res.orderId);
+              navigate(`/paymentsuccess?reference=${res.paymentId}`,{state:{payment:res,gig:data,dataUser}});
+            } else {
+              toast.error("Payment verification failed");
+            }
+          } catch (error) {
+            console.error("Error during payment verification:", error);
+            toast.error("Payment verification failed");
+          }
+        }
+      }
+
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+    } catch (error) {
+      toast.error(error?.response?.data?.error || error.message);
+    }
+};
+
 
   return (
     <div className="w-[90%] mx-auto flex gap-6">
@@ -205,9 +238,7 @@ const Gig = () => {
               {data.features.length > 0 &&
                 data.features?.map((item, index) => (
                   <div key={index} className="flex items-center gap-2">
-          
-                  <RxCheck size={25}  className="text-blue-900"/>
-
+                    <RxCheck size={25} className="text-blue-900" />
 
                     <p>{item}</p>
                   </div>
@@ -215,7 +246,7 @@ const Gig = () => {
 
               <button
                 className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold"
-                onClick={handleOrder}
+                onClick={checkoutHandler}
               >
                 Request to Order
               </button>
@@ -238,56 +269,64 @@ const Gig = () => {
                   ))}
                 </>
               )}
-             
             </div>
 
             {!isFetchingUser && !errorUser && (
               <div>
                 <h1 className="text-2xl font-bold my-8">About the Seller</h1>
-              
+
                 <div className="border border-gray-400 rounded-lg p-6 my-10">
-                <div className="flex items-center gap-8">
-                  <img
-                    src={dataUser.img || `/images/noavatar.jpg`}
-                    className="w-[90px] h-[90px] sm:w-[120px] sm:h-[120px] border-2 object-cover rounded-full"
-                    alt=""
-                  />
-                  <div className="flex flex-col lg:flex-row justify-between lg:w-full gap-4 lg:items-center">
-                    <div className="space-y-4">
+                  <div className="flex items-center gap-8">
+                    <img
+                      src={dataUser.img || `/images/noavatar.jpg`}
+                      className="w-[90px] h-[90px] sm:w-[120px] sm:h-[120px] border-2 object-cover rounded-full"
+                      alt=""
+                    />
+                    <div className="flex flex-col lg:flex-row justify-between lg:w-full gap-4 lg:items-center">
+                      <div className="space-y-4">
+                        <p className="text-xl font-semibold">
+                          {dataUser.fullname}
+                        </p>
 
-                    <p className="text-xl font-semibold">{dataUser.fullname}</p>
+                        <div className="flex gap-1">
+                          {!isNaN(
+                            Math.round(data.totalStar / data.starNumber)
+                          ) && (
+                            <>
+                              <div className="flex gap-1">
+                                {Array(
+                                  Math.round(data.totalStar / data.starNumber)
+                                )
+                                  .fill()
+                                  .map((_, index) => (
+                                    <img
+                                      key={index}
+                                      src="/images/star.png"
+                                      className="w-[15px]"
+                                      alt=""
+                                    />
+                                  ))}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
 
-                    <div className="flex gap-1">
-                      {!isNaN(Math.round(data.totalStar / data.starNumber)) && (
-                        <>
-                          <div className="flex gap-1">
-                            {Array(Math.round(data.totalStar / data.starNumber))
-                              .fill()
-                              .map((_, index) => (
-                                <img
-                                  key={index}
-                                  src="/images/star.png"
-                                  className="w-[15px]"
-                                  alt=""
-                                />
-                              ))}
-                          </div>
-                        </>
-                      )}
+                      <button
+                        className="px-4 py-2 border border-gray-800 rounded-lg"
+                        onClick={() => toast.error("will be available soon")}
+                      >
+                        Contact me
+                      </button>
                     </div>
-                    </div>
-
-                    <button className="px-4 py-2 border border-gray-800 rounded-lg" onClick={()=>toast.error("will be available soon")}>
-                      Contact me
-                    </button>
                   </div>
-                </div>
-                  <hr className="mt-5"/>
+                  <hr className="mt-5" />
                   <div className="grid grid-cols-1 lg:grid-cols-2 my-2 gap-2 text-left">
-                   
                     <div className="flex  items-center gap-3">
                       <p className="title">Member since :</p>
-                      <p className="font-semibold">{moment(dataUser.createdAt).format('LL')}</p>
+                      <p className="font-semibold">
+                        {moment(dataUser.createdAt).format("LL")}
+                      </p>
                     </div>
                     <div className="flex items-center gap-3">
                       <p className="whitespace-nowrap">Total Orders Done:</p>
@@ -301,11 +340,9 @@ const Gig = () => {
                       <p>contact : </p>
                       <p className="font-semibold">{dataUser.email}</p>
                     </div>
-                    </div>
+                  </div>
                   <hr className="my-2" />
-                  <p>
-                    {dataUser.desc}
-                  </p>
+                  <p>{dataUser.desc}</p>
                 </div>
               </div>
             )}
@@ -342,7 +379,7 @@ const Gig = () => {
             {data.features.length > 0 &&
               data.features?.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
-                  <RxCheck size={25}  className="text-blue-900"/>
+                  <RxCheck size={25} className="text-blue-900" />
 
                   <p>{item}</p>
                 </div>
@@ -350,7 +387,7 @@ const Gig = () => {
 
             <button
               className="w-full py-3 bg-blue-900 rounded-lg mt-8 text-white font-semibold"
-              onClick={handleOrder}
+              onClick={checkoutHandler}
             >
               Request to Order
             </button>

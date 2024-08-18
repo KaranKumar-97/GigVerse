@@ -10,7 +10,8 @@ const Mygigs = () => {
   const currentUser = useUserStore((state) => state.currentUser);
 
   const queryClient = useQueryClient();
-  const navigate=useNavigate();
+
+  const navigate = useNavigate();
 
   const { isFetching, error, data } = useQuery({
     queryKey: ["myGigs"],
@@ -41,7 +42,7 @@ const Mygigs = () => {
     mutate(id);
   };
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="w-[90%] mx-auto -mt-16 sm:mt-0">
@@ -53,7 +54,7 @@ const Mygigs = () => {
       {data?.length === 0 && (
         <div className="font-bold text-3xl flex flex-col gap-5 text-center justify-center items-center h-[40vh] text-red-700">
           You don't have any gigs yet !
-          <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl p-2">Create New Gig</button>
+          <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl p-2"  onClick={()=>navigate("/addgigs")}>Create New Gig</button>
         </div>
       )}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

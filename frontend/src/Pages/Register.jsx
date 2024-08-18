@@ -85,11 +85,12 @@ const Register = () => {
   const handleRegister = async () => {
     if (!validateForm()) return;
     
-    toast.loading("Uploading Image...");
     let imgUrl = null;
     if (image) {
+      const toastId = toast.loading("Uploading Image...");
       try {
         imgUrl = await upload(image);
+        toast.dismiss(toastId);
       } catch (error) {
         toast.error("Failed to upload image");
         console.error("Error uploading image:", error);

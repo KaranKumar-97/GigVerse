@@ -94,7 +94,7 @@ const Orders = () => {
               <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
                 {data.map((order) => (
                   <div
-                    className="bg-white border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+                    className="flex flex-col justify-between  border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
                     key={order._id}
                   >
                     <img
@@ -122,6 +122,11 @@ const Orders = () => {
                           </>
                         )}
                       </p>
+                      {order.payment_intent=="temporary string"? "" :(<div>
+
+                      <span className="text-gray-800 font-semibold">order Id :</span>
+                      <span className="text-gray-600"> {order.payment_intent}</span>
+                      </div>)}
                       <button
                         className="mt-4 flex items-center justify-center bg-blue-800 hover:bg-blue-600 text-white font-bold w-full py-2 rounded"
                         onClick={() => handleContact(order)}

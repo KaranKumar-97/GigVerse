@@ -8,9 +8,7 @@ export const createOrder = async (req, res,next) => {
         if(!gig){
             return res.status(404).json({error:"Gig not found"})
         }
-        if(gig.userId===req.userId){
-            return res.status(400).json({error:"You can't buy your own gig"})
-        }
+
         if(req.isSeller){
             return res.status(400).json({error:"Sellers cannot buy a gigs"})
         }
@@ -24,7 +22,7 @@ export const createOrder = async (req, res,next) => {
             buyerId:req.userId,
             buyerName:req.body.buyerName,
             sellerName:req.body.sellerName,
-            payment_intent:"temporary string"
+            payment_intent: req.body.orderId
         })
 
         await User.findByIdAndUpdate(gig.userId, { $inc: { orders: 1 } });

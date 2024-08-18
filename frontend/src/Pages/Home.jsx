@@ -145,7 +145,7 @@ const Home = () => {
         <Slide {...sliderSettings}>
           {topgigs.map((card, i) => {
             return (
-              <div className="scale-[89%] -mt-16">
+              <div className="scale-[89%] -mt-16" key={i}>
                 <GigCard key={i} item={card} className="scale-75" />
               </div>
             );
