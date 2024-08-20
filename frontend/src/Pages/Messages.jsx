@@ -89,7 +89,7 @@ const Messaages = () => {
                       />
                     </div>
                     <div>
-                      <div className="font-semibold text-lg text-gray-900">
+                      <div className="font-semibold text-lg ">
                         {currentUser.isSeller ? c?.buyerName : c.sellerName}
                       </div>
                       <div>{c?.lastMessage?.substring(0, 10)}...</div>
@@ -103,7 +103,7 @@ const Messaages = () => {
                     (!currentUser.isSeller && !c.readByBuyer) ? (
                       <button
                         onClick={() => handleRead(c.id)}
-                        className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-sm sm:text-base"
+                        className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-sm sm:text-base whitespace-nowrap"
                       >
                         Mark as Read
                       </button>
@@ -112,7 +112,7 @@ const Messaages = () => {
                         to={{
                           pathname: `/message/${c.id}`,
                         }}
-                        className="inline-block bg-blue-800 hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-sm sm:text-base"
+                        className="inline-block bg-blue-800 hover:bg-blue-900 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-sm sm:text-base whitespace-nowrap"
                       >
                         Open Chat
                       </Link>

@@ -42,9 +42,7 @@ const Message = () => {
   },[])
 
 
-
-
-  const { isFetching, error, data } = useQuery({
+  const { isPending, error, data } = useQuery({
     queryKey: ["messages"],
     queryFn: () =>
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/messages/${id}`,{withCredentials:true}).then((res) => res.data
@@ -52,6 +50,7 @@ const Message = () => {
         toast.error(error.message);
         throw error;
       }),
+      refetchInterval: 5000,
   });
 
   const {mutate} = useMutation({
@@ -99,7 +98,7 @@ const Message = () => {
         You are chatting with {currentUser?.isSeller ? `Buyer ${buyerName}` :`Seller ${sellerName}`}
         </Link>
       </span>
-      {isFetching ? (
+      {isPending ? (
         <Loader/>
       ) : error ? (
         "error"
