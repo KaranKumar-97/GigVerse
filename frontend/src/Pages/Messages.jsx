@@ -66,7 +66,7 @@ const Messaages = () => {
         "error"
       ) : (
         <div className="w-[95%] md:w-[90%] mx-auto ">
-          <div className="font-bold text-4xl my-10 text-blue-900">
+          <div className="font-bold text-4xl my-10 text-blue-900 dark:text-white">
             <h1>Messages</h1>
           </div>
 

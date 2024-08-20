@@ -13,6 +13,7 @@ import Select from "@mui/material/Select";
 
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import useDarkMode from "../Store/useDarkMode.jsx";
 
 const Gigs = () => {
   useEffect(() => {
@@ -70,6 +71,8 @@ const Gigs = () => {
     else navigate(`/gigs?category=${value}`);
   }
 
+  const dark=useDarkMode(state=>state.dark);
+
   // useEffect(() => {
   //   // Example condition: Only log if data has more than 0 items
   //   if (data && data.length > 0) {
@@ -86,8 +89,10 @@ const Gigs = () => {
 // }
 
   return (
+    <div className="">
+
     <div className="w-[95%] md:w-[90%] mx-auto -mt-16 sm:mt-0">
-      <div className="md:mt-10 mb-8 space-y-3">
+      <div className="md:pt-10 mb-8 space-y-3">
         <p className="flex gap-2">
           <img src="/images/home.svg" alt="" /> {"/  "}GigVerse {">"} {location.search.split("=")[1] ? 
           `${decodeURIComponent(location.search.split("=")[1])}`
@@ -101,9 +106,9 @@ const Gigs = () => {
         </p> */}
       </div>
 
-      <p className="font-bold text-xl text-blue-800 my-2 pl-4">Apply Filters</p>
+      <p className="font-bold text-xl text-blue-800 dark:text-white my-2 pl-4">Apply Filters</p>
 
-      <div className="flex flex-col md:flex-row gap-5 justify-between items-center px-3 py-2 bg-gray-100 border rounded-xl">
+      <div className="flex flex-col md:flex-row gap-5 justify-between items-center px-3 py-2 bg-gray-100 dark:bg-[#1A1B1D] dark:text-white border rounded-xl">
       <div className="w-[80%] lg:w-[20%] mt-3 lg:mt-0">
       <Autocomplete
             
@@ -119,7 +124,7 @@ const Gigs = () => {
                 label="Change Category"
                 name="category"
                 placeholder="Search for a Category"
-                className="bg-white"
+                className={`${dark ? '' : 'bg-white'}`}
 
               />
             )}
@@ -133,15 +138,15 @@ const Gigs = () => {
             type="number"
             placeholder="min"
             ref={minRef}
-            // value={minRef.current?.value}
-            className="border border-gray-300 rounded-md px-2 py-1 w-[100px]"
+       
+            className="border border-gray-300 dark:bg-[#1A1B1D] rounded-md px-2 py-1 w-[100px]"
             />
           <input
             type="number"
             placeholder="max"
             ref={maxRef}
-            // value={maxRef.current?.value}
-            className="border border-gray-300 rounded-md px-2 py-1 w-[100px]"
+         
+            className="border border-gray-300 dark:bg-[#1A1B1D]  rounded-md px-2 py-1 w-[100px]"
             />
           <button className="px-4 py-1 bg-blue-900 text-white rounded-lg" onClick={()=> refetch()}>
             Apply
@@ -160,7 +165,7 @@ const Gigs = () => {
               onChange={(e)=>{setSortby(e.target.value);}}
               fullWidth
               size="small"
-              className="bg-white"
+              className={`${dark ? '' : 'bg-white'}`}
             >
               <MenuItem value="price">Price</MenuItem>
               <MenuItem value="sales">Best Selling</MenuItem>
@@ -173,7 +178,7 @@ const Gigs = () => {
       {isFetching && <Loader />}
       {error && (
        <div className="w-full h-[50vh] flex flex-col gap-6 justify-center items-center">
-       <p className="text-blue-900 text-4xl font-bold">Oops! Soemthing Went Wrong</p>
+       <p className="text-blue-900 dark:text-indigo-500 text-4xl font-bold">Oops! Soemthing Went Wrong</p>
        <p className="text-red-600 text-4xl font-bold">{error.message}</p>
        <button className="px-6 py-4 bg-blue-900 text-white rounded-lg" onClick={()=>navigate("/")}>Take me to Home Page</button>
      </div>
@@ -181,7 +186,7 @@ const Gigs = () => {
 
       {isFetching ? "" : error ? "" : data.length==0 ? (
         <div className="w-full h-[50vh] flex flex-col gap-6 justify-center items-center">
-          <p className="text-blue-900 text-4xl font-bold">No Gigs in this Category / Filter</p> 
+          <p className="text-blue-900 dark:text-indigo-500 text-4xl font-bold">No Gigs in this Category / Filter</p> 
         </div>
       
       ) :  (
@@ -192,6 +197,8 @@ const Gigs = () => {
         </div>
       )}
     </div>
+    </div>
+
   );
 };
 

@@ -127,6 +127,8 @@ const Gig = () => {
 
 
   return (
+    <div className="dark:bg-[#1A1B1D] dark:text-white">
+
     <div className="w-[90%] mx-auto flex gap-6">
       {isFetching && (
         <div className=" w-full h-[80vh] flex justify-center items-center">
@@ -197,7 +199,7 @@ const Gig = () => {
                 )}
                 </div>
 
-                {data.userId=== currentUser._id && <Link to={`/editgig/${data._id}`} className="py-2 px-4 bg-blue-900 text-white rounded-lg">
+                {data.userId=== currentUser?._id && <Link to={`/editgig/${data?._id}`} className="py-2 px-4 bg-blue-900 text-white rounded-lg">
                   Edit Gig
                 </Link>}
               </div>
@@ -361,14 +363,14 @@ const Gig = () => {
           <div className="w-[90vw] md:w-[30vw] border border-gray-400 rounded-lg p-6 h-auto mt-10 sticky top-[10rem] hidden md:block">
             <div className="flex justify-between text-xl mb-5">
               <p className="font-semibold">{data.shortTitle}</p>
-              <p>₹{data.price} INR</p>
+              <p className="whitespace-nowrap">₹{data.price} INR</p>
             </div>
             <p>{data.shortDesc}</p>
             <div className="flex justify-between my-5">
               <div className="flex items-center gap-2">
                 <img
                   src="/images/clock.png"
-                  className="w-[20px] h-[20px]"
+                  className="w-[20px] h-[20px] dark:invert"
                   alt=""
                 />
                 <span>{data.deliveryTime} Days Delivery</span>
@@ -376,7 +378,7 @@ const Gig = () => {
               <div className="flex items-center gap-2">
                 <img
                   src="/images/recycle.png"
-                  className="w-[20px] h-[20px]"
+                  className="w-[20px] h-[20px] dark:invert"
                   alt=""
                 />
                 <span>{data.revision} Revisions</span>
@@ -402,6 +404,8 @@ const Gig = () => {
         </div>
       )}
     </div>
+    </div>
+
   );
 };
 

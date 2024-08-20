@@ -159,8 +159,8 @@ const fileURLs =
   };
 
   return (
-    <div className="max-w-[90%] mx-auto -mt-3 md:mt-0">
-      <h1 className="font-bold text-4xl mb-10 text-blue-900">Edit Gig</h1>
+    <div className="max-w-[90%] mx-auto -mt-3 md:mt-5">
+      <h1 className="font-bold text-4xl mb-10 text-blue-900 dark:text-white">Edit Gig</h1>
 
       <div className="flex flex-col lg:flex-row justify-evenly">
         {/* left */}

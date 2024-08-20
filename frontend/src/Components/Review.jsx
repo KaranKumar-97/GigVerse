@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import useDarkMode from "../Store/useDarkMode";
 
 const Review = ({ review }) => {
   const { isPending, error, data } = useQuery({
@@ -17,17 +18,19 @@ const Review = ({ review }) => {
         }),
   });
 
-  const [likeColor, setLikeColor] = useState('black');
-  const [dislikeColor, setDislikeColor] = useState('black');
+  const dark=useDarkMode(state=>state.dark);
+
+  const [likeColor, setLikeColor] = useState(dark?'white':'black');
+  const [dislikeColor, setDislikeColor] = useState(dark?'white':'black');
 
   const handleLikeClick = () => {
-    setLikeColor(likeColor === 'green' ? 'black' : 'green');
-    setDislikeColor('black');
+    setLikeColor(likeColor === 'green' ? dark?'white':'black' : 'green');
+    setDislikeColor(dark?'white':'black');
   };
 
   const handleDislikeClick = () => {
-    setDislikeColor(dislikeColor === 'red' ? 'black' : 'red');
-    setLikeColor('black');
+    setDislikeColor(dislikeColor === 'red' ? dark?'white':'black' : 'red');
+    setLikeColor(dark?'white':'black');
   };
 
   // useEffect(() => {

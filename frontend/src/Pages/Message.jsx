@@ -94,7 +94,7 @@ const Message = () => {
   return (
     <div className="w-[92%] mx-auto -mt-16 sm:mt-0">
     <div className="mt-10">
-      <span className='font-semibold sm:text-xl text-blue-800'>
+      <span className='font-semibold sm:text-xl text-blue-800 dark:text-white'>
         <Link to="/messages">
         You are chatting with {currentUser?.isSeller ? `Buyer ${buyerName}` :`Seller ${sellerName}`}
         </Link>

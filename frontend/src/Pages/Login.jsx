@@ -73,7 +73,7 @@ const Login = () => {
     <div>
         <Toaster />
       <div className="flex flex-col justify-center items-center -mt-32 sm:mt-0 ">
-        <p className="text-3xl font-bold text-center text-blue-900 mt-20">
+        <p className="text-3xl font-bold text-center text-blue-900 dark:text-white mt-20">
           SIGN IN
         </p>
 

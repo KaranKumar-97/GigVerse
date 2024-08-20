@@ -86,32 +86,23 @@ const Home = () => {
     },
   ];
 
-  const [topgigs, setTopgigs] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/gigs/topgigs`)
-      .then((res) => setTopgigs(res.data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  const { isFetching, error, data } = useQuery({
-    queryKey: [`topgigs`],
-    queryFn: () =>
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/gigs/topgigs`)
-        .then((res) => setTopgigs(res.data))
-        .catch((err) => {
-          console.log(err);
-          throw error;
-        }),
+  const fetchTopGigs = async () => {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/gigs/topgigs`);
+    return response.data || []; 
+  };
+  
+  const { isFetching, error, data: topgigs = [] } = useQuery({
+    queryKey: ['topgigs'],
+    queryFn: fetchTopGigs,
   });
 
   return (
-    <div>
+    <div className=" md:dark:bg-transparent">
       <Featured />
-      <div className="w-[90%] mx-auto -mt-16 sm:mt-20  ">
-        <h1 className="font-bold text-2xl my-10 text-blue-900">
+      <div className="dark:bg-[#1A1B1D] dark:text-white ">
+      <div className="w-[90%] mx-auto -mt-20 sm:mt-10 ">
+        <h1 className="font-bold text-2xl md:text-3xl my-10 text-blue-900 dark:text-white">
           Explore Categories
         </h1>
         <div className="flex justify-center gap-10 flex-wrap md:w-[80%] mx-auto">
@@ -121,7 +112,7 @@ const Home = () => {
                 category.title === "All" ? "" : category.title
               }`}
               key={i}
-              className="w-32 h-36 md:w-48 md:h-44 flex flex-col gap-3 justify-center items-center border rounded-xl p-4 bg-gray-100 shadow-xl hover:bg-white transform hover:scale-[102%] transition-all duration-300 ease-in-out"
+              className="w-32 h-36 md:w-48 md:h-44 flex flex-col gap-3 justify-center items-center border rounded-xl p-4 bg-gray-100 dark:bg-transparent shadow-xl hover:bg-white dark:hover:bg-gray-800 transform hover:scale-[102%] transition-all duration-300 ease-in-out"
             >
               <img
                 src={category.img}
@@ -135,7 +126,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <h1 className="font-bold text-2xl text-gray-700 w-[90%] mx-auto mt-8 md:my-8">
+      <h1 className="font-bold text-2xl text-gray-700 w-[90%] mx-auto mt-8 md:my-8 dark:text-white">
         Popular services
       </h1>
       {isFetching && (
@@ -152,6 +143,8 @@ const Home = () => {
           })}
         </Slide>
       </div>}
+      </div>
+
     </div>
   );
 };

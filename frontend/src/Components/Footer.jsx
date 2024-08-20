@@ -6,8 +6,8 @@ import { SiLeetcode } from "react-icons/si";
 
 function Footer() {
   return (
-    <div className="footer">
-      <div className="max-w-[90%] mx-auto my-5 bg-[#1A1B1D] text-white p-5 rounded-xl">
+    <div className="dark:bg-[#1A1B1D] md:text-white pt-10">
+      <div className="max-w-[90%] mx-auto py-5 bg-[#1A1B1D] text-white p-5 rounded-xl">
         <div className="flex flex-col md:flex-row gap-3 justify-around">
           <div className="item">
             <h2 className="font-semibold">Categories</h2>

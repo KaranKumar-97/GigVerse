@@ -121,7 +121,7 @@ const Register = () => {
     <div className="-mt-28 sm:mt-0">
       <div className="flex flex-col md:flex-row justify-evenly w-[90%] mt-16 mx-auto">
         <div className="flex flex-col items-center justify-center gap-5 md:min-w-[45%] ">
-          <p className="font-bold text-2xl text-gray-600">
+          <p className="font-bold text-2xl ">
             Create a new account
           </p>
 
@@ -159,7 +159,7 @@ const Register = () => {
               helperText={errors.password}
             />
 
-            <p className="font-medium text-gray-600">Upload Profile Picture:</p>
+            <p className="font-medium">Upload Profile Picture:</p>
             <div className="border border-slate-300 p-3 rounded">
               <input
                 type="file"
@@ -176,7 +176,7 @@ const Register = () => {
         </div>
 
         <div className="space-y-5 md:mt-0 mt-16">
-          <p className="font-bold text-2xl text-center text-gray-600">
+          <p className="font-bold text-2xl text-center">
             I want to become a Seller
           </p>
 

@@ -17,6 +17,9 @@ import Loader from "./Components/Loader";
 import toast from "react-hot-toast";
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import Editgig from "./Pages/Editgig";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
 
 
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
@@ -28,6 +31,7 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import useUserStore from "./Store/useUserStore";
+import useDarkMode from "./Store/useDarkMode";
 
 function App() {
   const login = useUserStore((state) => state.login);
@@ -78,9 +82,25 @@ function App() {
 
   const queryClient = new QueryClient();
   const Layout = () => {
+    const dark = useDarkMode((state) => state.dark);
+    
+  const darkTheme = createTheme({
+    palette: {
+      mode: dark?'dark':'light',
+      background: {
+        default: dark ? '#1A1B1D' : '#ffffff', // Black for dark mode, white for light mode
+        paper: dark ? '#000000' : '#ffffff', // Black for dark mode, white for light mode
+      },
+      text: {
+        primary: dark ? '#ffffff' : '#000000', // White text for dark mode, black text for light mode
+      },
+    },
+  });
     return (
       <QueryClientProvider client={queryClient}>
-        <div className="font-montserrat">
+          <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+        <div className={`${dark ? "dark" : ""} font-montserrat`}>
           <Navbar />
 
           <div className="pt-[5rem]">
@@ -89,6 +109,7 @@ function App() {
             <ReactQueryDevtools initialIsOpen={false} />
           </div>
         </div>
+        </ThemeProvider>
       </QueryClientProvider>
     );
   };

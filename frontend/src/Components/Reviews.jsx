@@ -5,6 +5,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
 import toast from "react-hot-toast";
+import useDarkMode from "../Store/useDarkMode";
 
 const Reviews = ({ gigId }) => {
   const queryClient = useQueryClient()
@@ -62,6 +63,8 @@ const Reviews = ({ gigId }) => {
     }
   };
 
+  const dark=useDarkMode((state)=>state.dark);
+
 
   // alternate useMutation
 
@@ -87,17 +90,21 @@ const Reviews = ({ gigId }) => {
       <h1 className="text-2xl font-bold my-8">Reviews</h1>
 
       <div className="my-8 flex flex-col md:flex-row justify-center items-center gap-3 md:gap-8">
-        <TextField
-          sx={{ width: "80%" }}
-          multiline
-          fullWidth
-          label="Write a Review"
-          type="text"
-          placeholder="Write a Review"
-          value={reviewData.desc}
-          onChange={(e) => {
-            setReviewData({ ...reviewData, desc: e.target.value })}}
-        />
+      <TextField
+     sx={{
+      width: "80%",
+    }}
+  multiline
+  fullWidth
+  label="Write a Review"
+  type="text"
+  placeholder="Write a Review"
+  value={reviewData.desc}
+  onChange={(e) => {
+    setReviewData({ ...reviewData, desc: e.target.value });
+  }}
+/>
+
         <div>
           <p>Give Rating</p>
           <Rating

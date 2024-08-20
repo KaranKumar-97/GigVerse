@@ -3,11 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import useUserStore from "../Store/useUserStore";
+import useDarkMode from "../Store/useDarkMode";
 import { FaArtstation } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { FiShoppingBag } from "react-icons/fi";
 import { FiMessageSquare } from "react-icons/fi";
 import { FiLogOut } from "react-icons/fi";
+import { MdDarkMode } from "react-icons/md";
+import { MdLightMode } from "react-icons/md";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
@@ -46,6 +49,9 @@ const Navbar = () => {
   const currentUser = useUserStore((state) => state.currentUser);
   const logout = useUserStore((state) => state.logout);
 
+  const dark = useDarkMode((state) => state.dark);
+  const toggleDarkMode = useDarkMode((state) => state.toggleDarkMode);
+
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -81,23 +87,28 @@ const Navbar = () => {
   return (
     <div
       className={
-        "z-50 transition-all ease-in-out duration-500 sm:fixed w-full h-[5rem]" +
-        (active || pathname !== "/"
-          ? " text-gray-700 bg-white"
-          : " bg-[#1A1B1D] text-white ")
-      }
+        `z-50 transition-all ease-in-out duration-500 sm:fixed w-full h-[5rem] dark:bg-[#1A1B1D] dark:text-white
+        ${active || pathname !== "/" ? " text-gray-700 bg-white" : " bg-[#1A1B1D] text-white" }
+      `}
     >
       <Toaster />
       <div className="flex justify-between max-w-[90%] mx-auto p-4">
         <div className="text-xl sm:text-3xl font-bold ">
           <Link to="/" className="flex justify-center items-center gap-2"> 
           <img src="/images/GV_fav.png" alt="" className="w-11" />
-            <span className="">GigVerse</span>
-          <span className="text-2xl sm:text-4xl text-blue-400">.</span>
+            <span className="hidden sm:block">GigVerse</span>
+          <span className="text-2xl sm:text-4xl text-blue-400 hidden sm:block">.</span>
           </Link>
         </div>
 
         <div className="flex items-center gap-5 font-semibold">
+        {dark ? (
+          <MdLightMode onClick={toggleDarkMode} size={40} className="text-yellow-500 cursor-pointer transform transition-transform duration-300 hover:scale-110 hover:rotate-12" />
+        ) : (
+          <MdDarkMode onClick={toggleDarkMode} size={40} className="text-blue-800 cursor-pointer transform transition-transform duration-300 hover:scale-110 hover:-rotate-6 " />
+        )}
+
+
 
 
           {!currentUser && (
@@ -131,13 +142,13 @@ const Navbar = () => {
               {open && (
                 <div
                   ref={popupRef}
-                  className="absolute top-18 -right-7 md:-right-14 mt-2 border-2 bg-white text-gray-700 py-2 rounded-lg shadow-lg w-48 z-10 transition duration-200 ease-out"
+                  className="absolute top-18 -right-7 md:-right-14 mt-2 border-2 bg-white dark:bg-[#1A1B1D] dark:text-white text-gray-700 py-2 rounded-lg shadow-lg w-48 z-10 transition duration-200 ease-out "
                 >
                   {currentUser?.isSeller && (
                     <>
                       <Link
                         to="mygigs"
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-150"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
                         onClick={() => {
                           setOpen(false);
                         }}
@@ -147,7 +158,7 @@ const Navbar = () => {
                       </Link>
                       <Link
                         to="/addgigs"
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-150"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700  transition-colors duration-150"
                         onClick={() => {
                           setOpen(false);
                         }}
@@ -159,7 +170,7 @@ const Navbar = () => {
                   )}
                   <Link
                     to="/orders"
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-150"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700  transition-colors duration-150"
                     onClick={() => {
                       setOpen(false);
                     }}
@@ -169,7 +180,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/messages"
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-150"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700  transition-colors duration-150"
                     onClick={() => {
                       setOpen(false);
                     }}
@@ -179,7 +190,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/"
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-150"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700  transition-colors duration-150"
                     onClick={() => {
                       handleLogout();
                       setOpen(false);
@@ -196,7 +207,7 @@ const Navbar = () => {
       </div>
       {active && (
         // (active || pathname!=="/")
-        <div className="bg-white hidden sm:block">
+        <div className="bg-white dark:bg-[#1A1B1D] hidden sm:block">
           <hr className="pt-1" />
           <div className="max-w-[90%] mx-auto">
             <div className="flex gap-1 justify-between">

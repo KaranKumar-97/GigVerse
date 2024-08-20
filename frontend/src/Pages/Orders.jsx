@@ -76,7 +76,7 @@ const Orders = () => {
   return (
     <div className="">
       <div className="w-[90%] mx-auto -mt-16 sm:mt-0">
-        <div className="font-bold text-4xl my-10 text-blue-900">
+        <div className="font-bold text-4xl my-10 text-blue-900 dark:text-white">
           <h1>My Orders</h1>
         </div>
         {isLoading && <Loader />}
@@ -103,19 +103,19 @@ const Orders = () => {
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-4">
-                      <h3 className="font-bold text-lg">{order.title}</h3>
-                      <p className="text-gray-800">₹ {order.price} INR</p>
-                      <p className="text-gray-600">
+                      <h3 className="font-semibold text-lg dark:text-indigo-500">{order.title}</h3>
+                      <p className="text-gray-800 dark:text-white">₹ {order.price} INR</p>
+                      <p className="text-gray-600 dark:text-white">
                         {currentUser.isSeller ? (
                           <>
-                            <span className="text-gray-800 font-semibold">
+                            <span className="text-gray-800 dark:text-white font-semibold">
                               Buyer :{" "}
                             </span>
                             {order?.buyerName}
                           </>
                         ) : (
                           <>
-                            <span className="text-gray-800 font-semibold">
+                            <span className="text-gray-800 dark:text-white font-semibold">
                               Seller :{" "}
                             </span>
                             {order?.sellerName}
@@ -124,8 +124,8 @@ const Orders = () => {
                       </p>
                       {order.payment_intent=="temporary string"? "" :(<div>
 
-                      <span className="text-gray-800 font-semibold">order Id :</span>
-                      <span className="text-gray-600"> {order.payment_intent}</span>
+                      <span className="text-gray-800 dark:text-white font-semibold">order Id :</span>
+                      <span className="text-gray-600 dark:text-white"> {order.payment_intent}</span>
                       </div>)}
                       <button
                         className="mt-4 flex items-center justify-center bg-blue-800 hover:bg-blue-600 text-white font-bold w-full py-2 rounded"

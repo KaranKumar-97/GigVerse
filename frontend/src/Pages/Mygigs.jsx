@@ -46,7 +46,7 @@ const Mygigs = () => {
 
   return (
     <div className="w-[90%] mx-auto -mt-16 sm:mt-0">
-      <div className="font-bold flex justify-between text-4xl my-10 text-blue-900">
+      <div className="font-bold flex justify-between text-4xl my-10 text-blue-900 dark:text-white">
         <h1>My Gigs</h1>
         {data?.length>0 && <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl py-2 px-3 text-sm font-medium" onClick={()=>navigate("/addgigs")}>Create New Gig</button>}
       </div>
@@ -61,23 +61,23 @@ const Mygigs = () => {
         {!isFetching && data?.length>0 && data?.map((g) => (
           <div
             key={g._id}
-            className="bg-white shadow-md rounded-lg p-6 border border-gray-200 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
+            className=" shadow-md rounded-lg p-6 border border-gray-200 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-xl text-gray-800 dark:text-white flex flex-col justify-between"
           >
             <img
               src={g.cover}
               alt=""
               className="w-full h-48 object-cover rounded-md mb-4"
             />
-            <h3 className="text-xl font-semibold text-blue-900 mb-2">
+            <h3 className="text-xl font-semibold text-blue-900 dark:text-indigo-500 mb-2">
               {g.title}
             </h3>
-            <p className="text-gray-800">
+            <p className="">
               <strong>Price:</strong> ₹ {g.price}
             </p>
-            <p className="text-gray-800">
+            <p className="">
               <strong>Category:</strong> {g.category}
             </p>
-            <p className="text-gray-800">
+            <p className="">
               <strong>Orders Done:</strong> {g.sales}
             </p>
             <div className="flex justify-between items-center mt-4">
