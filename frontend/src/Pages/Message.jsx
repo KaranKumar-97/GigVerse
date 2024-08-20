@@ -115,7 +115,7 @@ const Message = () => {
         ref={messagesEndRef}
         >
         {data.map((m) => (
-          <div className={`${m.userId === currentUser._id ? "" : "flex-row-reverse self-end"} flex gap-5 max-w-[400px] text-xs sm:text-sm  md:text-base`} key={m._id}>
+          <div className={`${m.userId === currentUser._id ? "flex-row-reverse self-end" : ""} flex gap-5 max-w-[400px] text-xs sm:text-sm  md:text-base`} key={m._id}>
             <img
               src={m.userImage || "/images/noavatar.jpg"}
               alt=""
@@ -124,7 +124,7 @@ const Message = () => {
             <p className={`${m.userId === currentUser._id ? 
               "bg-blue-900 text-white rounded-tl-lg rounded-br-lg rounded-bl-lg" : 
               "bg-gray-700 text-white rounded-tr-lg rounded-br-lg rounded-bl-lg "} 
-              max-w-[200px] md:max-w-[500px] p-5 whitespace-pre-line break-words overflow-wrap break-word`}>
+              max-w-[200px] md:max-w-[500px] px-5 py-2 whitespace-pre-line break-words overflow-wrap break-word`}>
               {m.desc}
             </p>
           </div>
