@@ -51,17 +51,17 @@ const Mygigs = () => {
         {data?.length>0 && <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl py-2 px-3 text-sm font-medium" onClick={()=>navigate("/addgigs")}>Create New Gig</button>}
       </div>
       {isFetching && <Loader/>}
-      {data?.length === 0 && (
+      {!isFetching && data?.length === 0 && (
         <div className="font-bold text-3xl flex flex-col gap-5 text-center justify-center items-center h-[40vh] text-red-700">
           You don't have any gigs yet !
           <button className="bg-blue-900 hover:bg-blue-800 text-white rounded-xl p-2"  onClick={()=>navigate("/addgigs")}>Create New Gig</button>
         </div>
       )}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {data?.length>0 && data?.map((g) => (
+        {!isFetching && data?.length>0 && data?.map((g) => (
           <div
             key={g._id}
-            className="bg-white shadow-md rounded-lg p-6 border border-gray-200 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-xl"
+            className="bg-white shadow-md rounded-lg p-6 border border-gray-200 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
           >
             <img
               src={g.cover}
@@ -83,13 +83,19 @@ const Mygigs = () => {
             <div className="flex justify-between items-center mt-4">
               <Link
                 to={`/gig/${g._id}`}
-                className="bg-blue-900 text-white py-2 px-4 rounded-md transition duration-300 ease-in-out hover:bg-blue-700"
+                className="bg-blue-900 text-white py-2 px-6 rounded-md transition duration-300 ease-in-out hover:bg-blue-700"
               >
                 View
               </Link>
+              <Link
+                to={`/editgig/${g._id}`}
+                className="bg-green-700 text-white py-2 px-6 rounded-md transition duration-300 ease-in-out hover:bg-green-600"
+              >
+                Edit
+              </Link>
               <button
                 onClick={() => handleDelete(g._id)}
-                className="bg-red-900 text-white py-2 px-4 rounded-md transition duration-300 ease-in-out hover:bg-red-700"
+                className="bg-red-900 text-white py-2 px-6 rounded-md transition duration-300 ease-in-out hover:bg-red-700"
               >
                 Delete
               </button>

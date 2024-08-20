@@ -12,6 +12,12 @@ import Messages from "./Pages/Messages";
 import Message from "./Pages/Message";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import axios from "axios";
+import Loader from "./Components/Loader";
+import toast from "react-hot-toast";
+import PaymentSuccess from "./Pages/PaymentSuccess";
+import Editgig from "./Pages/Editgig";
+
 
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
@@ -20,11 +26,8 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import useUserStore from "./Store/useUserStore";
-import axios from "axios";
-import Loader from "./Components/Loader";
-import toast from "react-hot-toast";
-import PaymentSuccess from "./Pages/PaymentSuccess";
 
 function App() {
   const login = useUserStore((state) => state.login);
@@ -83,6 +86,7 @@ function App() {
           <div className="pt-[5rem]">
             <Outlet />
             <Footer />
+            <ReactQueryDevtools initialIsOpen={false} />
           </div>
         </div>
       </QueryClientProvider>
@@ -99,6 +103,7 @@ function App() {
         { path: "/orders", element: <Orders /> },
         { path: "/mygigs", element: <Mygigs /> },
         { path: "/addgigs", element: <Addgigs /> },
+        { path: "/editgig/:id", element: <Editgig /> },
         { path: "/messages", element: <Messages /> },
         { path: "/message/:id", element: <Message /> },
         { path: "/login", element: <Login /> },

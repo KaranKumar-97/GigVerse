@@ -15,6 +15,8 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
   const { payment, gig, dataUser } = location.state || {};
 
+  console.log(location)
+
   const contentRef = useRef();
 
   const handleDownloadPdf = () => {

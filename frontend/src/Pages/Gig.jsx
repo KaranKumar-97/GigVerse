@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Slide from "../Components/Slide";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link,useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import Loader from "../Components/Loader";
@@ -167,12 +167,14 @@ const Gig = () => {
             )}
 
             {!isFetchingUser && (
-              <div className="flex items-center gap-2">
+              <div className="flex justify-between items-center gap-2">
+                <div className="flex items-center gap-2">
+
                 <img
                   src={dataUser.img || "/images/noavatar.jpg"}
                   className="w-[50px] h-[50px] border-2 object-cover rounded-full"
                   alt=""
-                />
+                  />
                 <p>{dataUser.fullname}</p>
                 {!isNaN(Math.round(data.totalStar / data.starNumber)) && (
                   <>
@@ -181,10 +183,10 @@ const Gig = () => {
                         .fill()
                         .map((_, index) => (
                           <img
-                            key={index}
-                            src="/images/star.png"
-                            className="w-[15px]"
-                            alt=""
+                          key={index}
+                          src="/images/star.png"
+                          className="w-[15px]"
+                          alt=""
                           />
                         ))}
                     </div>
@@ -193,6 +195,11 @@ const Gig = () => {
                     </p>
                   </>
                 )}
+                </div>
+
+                {data.userId=== currentUser._id && <Link to={`/editgig/${data._id}`} className="py-2 px-4 bg-blue-900 text-white rounded-lg">
+                  Edit Gig
+                </Link>}
               </div>
             )}
 

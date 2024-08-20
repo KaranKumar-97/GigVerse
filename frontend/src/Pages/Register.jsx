@@ -118,7 +118,7 @@ const Register = () => {
   };
 
   return (
-    <div className="">
+    <div className="-mt-28 sm:mt-0">
       <div className="flex flex-col md:flex-row justify-evenly w-[90%] mt-16 mx-auto">
         <div className="flex flex-col items-center justify-center gap-5 md:min-w-[45%] ">
           <p className="font-bold text-2xl text-gray-600">

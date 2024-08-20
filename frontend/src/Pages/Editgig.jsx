@@ -4,15 +4,16 @@ import Autocomplete from "@mui/material/Autocomplete";
 import upload from "../utils/upload.jsx";
 import { GigReducer, INITIAL_STATE } from "../Reducers/GigReducer.jsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import useUserStore from "../Store/useUserStore";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Slide from "../Components/Slide.jsx";
 
-const Addgigs = () => {
+const Editgig = () => {
   const currentUser = useUserStore((state) => state.currentUser);
   const navigate = useNavigate();
+  const {id} = useParams();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,6 +25,15 @@ const Addgigs = () => {
 
     return () => clearTimeout(timer);
   }, [currentUser]);
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/gigs/single/${id}`).then((res) => {
+        const { totalStar,starNumber,sales,__v,_id,createdAt,updatedAt,userId, ...rest } = res.data; // Exclude cover and images
+        dispatch({ type: "SET_GIG", payload: rest });
+    }).catch((error) => {
+      console.log(error);
+    });
+  },[id])
 
   const [state, dispatch] = useReducer(GigReducer, {
     ...INITIAL_STATE,
@@ -55,18 +65,20 @@ const Addgigs = () => {
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
 
-  // Convert single file to URL
-  const singleFileURL = singleFile ? URL.createObjectURL(singleFile) : "";
+// Convert single file to URL
+const singleFileURL = singleFile ? URL.createObjectURL(singleFile) : state.cover;
 
-  // Convert multiple files to URLs
-  const fileURLs =
-    files.length > 0
-      ? Array.from(files).map((file) => URL.createObjectURL(file))
-      : [];
+
+// Convert multiple files to URLs
+const fileURLs =
+  files.length > 0
+    ? Array.from(files).map((file) => URL.createObjectURL(file))
+    : state.images;
+
 
   const handleUpload = async () => {
     if (!singleFile || files.length === 0) {
-      toast.error("Cover or images cannot be empty.");
+      toast.error("Select new images to upload");
       return;
     }
 
@@ -113,13 +125,15 @@ const Addgigs = () => {
 
   const {mutate} = useMutation({
     mutationFn: (gig) => {
-      return axios.post(`${import.meta.env.VITE_BACKEND_URL}/gigs`, gig,{withCredentials:true});
+      return axios.put(`${import.meta.env.VITE_BACKEND_URL}/gigs/edit/${id}`, gig,{withCredentials:true});
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       queryClient.invalidateQueries(["myGigs"]);
+      toast.success(response.data.message);
     },
     onError: (error) => {
-      console.log(error)
+      toast.error(error.response?.data?.message || "An error occurred while updating the gig.");
+      console.log(error);
     }
   });
 
@@ -141,13 +155,12 @@ const Addgigs = () => {
       return;
     }
     mutate(state);
-    toast.success("Gig Created Successfully");
     navigate("/mygigs");
   };
 
   return (
-    <div className="max-w-[90%] mx-auto -mt-3 md:mt-10">
-      <h1 className="font-bold text-4xl mb-10 text-blue-900">Add New Gig</h1>
+    <div className="max-w-[90%] mx-auto -mt-3 md:mt-0">
+      <h1 className="font-bold text-4xl mb-10 text-blue-900">Edit Gig</h1>
 
       <div className="flex flex-col lg:flex-row justify-evenly">
         {/* left */}
@@ -157,6 +170,7 @@ const Addgigs = () => {
             name="title"
             label="Gig Title"
             variant="outlined"
+            value={state.title}
             placeholder="i.e I will do something i am really good at"
             onChange={handleChange}
           />
@@ -164,6 +178,7 @@ const Addgigs = () => {
           <Autocomplete
             disablePortal
             label="Category"
+            value={state.category}
             options={categories}
             onChange={(e, value) => dispatch({ type: "SET_CATEGORY", payload:  value })}
             renderInput={(params) => (
@@ -176,8 +191,10 @@ const Addgigs = () => {
               />
             )}
           />
+          <p className="text-red-500 font-medium">To change images you need to reselect all images(cover & images) and click upload button</p>
 
           <div className="border p-4 rounded-xl space-y-2">
+        
             <p className="font-medium">Upload Cover Image</p>
 
             <input
@@ -185,10 +202,7 @@ const Addgigs = () => {
               accept="image/png, image/jpeg"
               onChange={(e) => setSingleFile(e.target.files[0])}
             />
-
-            {singleFile && (
-              <img src={singleFileURL} alt="Cover" className="w-40" />
-            )}
+            {<img src={singleFileURL} alt="Cover" className="w-40" />}
           </div>
 
           <div className="border p-4 rounded-xl space-y-2">
@@ -199,7 +213,7 @@ const Addgigs = () => {
               multiple
               onChange={(e) => setFiles(e.target.files)}
             />
-            <Slide slidesToShow={1} arrowsScroll={1} >
+              <Slide slidesToShow={1} arrowsScroll={1} >
               {fileURLs.map((url, index) => (
                 <img
                   key={index}
@@ -220,7 +234,6 @@ const Addgigs = () => {
             {uploading ? "Uploading..." : uploaded ? "Uploaded" : "Upload"}
           </button>
 
-     
         </div>
 
         {/* right */}
@@ -232,13 +245,16 @@ const Addgigs = () => {
             placeholder="Brief Description to describe your service to clients "
             rows={6}
             name="desc"
+            value={state.desc}
             onChange={handleChange}
           />
+
           <TextField
             fullWidth
             label="Short Title"
             variant="outlined"
             placeholder="Short Title"
+            value={state.shortTitle}
             onChange={handleChange}
             name="shortTitle"
           />
@@ -249,9 +265,13 @@ const Addgigs = () => {
             label="Short Description"
             placeholder="Brief Description to describe your service to clients"
             rows={3}
+            value={state.shortDesc}
             onChange={handleChange}
             name="shortDesc"
           />
+
+          <div className="flex gap-5">
+
 
           <TextField
             fullWidth
@@ -259,28 +279,32 @@ const Addgigs = () => {
             label="Delivery Time"
             variant="outlined"
             placeholder="Delivery Time (in Days)"
+            value={state.deliveryTime}
             onChange={handleChange}
             name="deliveryTime"
-          />
+            />
           <TextField
             fullWidth
             type="number"
             label="revision Number"
             variant="outlined"
             placeholder="No. of times you can modify the work"
+            value={state.revision}
             onChange={handleChange}
             name="revision"
-          />
+            />
+            </div>
 
           <form action="" onSubmit={handleFeature} className="flex">
             <TextField
+            fullWidth
               type="text"
               label="Features"
               placeholder="What you will provide"
             />
             <button
               type="submit"
-              className="rounded-xl bg-blue-800 text-white md:py-4 px-1 md:px-3 mx-5 p"
+              className="rounded-xl bg-blue-800 text-white md:py-4 px-2 md:px-3 ml-5 whitespace-nowrap"
             >
               Add More
             </button>
@@ -305,6 +329,7 @@ const Addgigs = () => {
             type="number"
             label="Price"
             placeholder="Price in INR"
+            value={state.price}
             onChange={handleChange}
             name="price"
           />
@@ -313,7 +338,7 @@ const Addgigs = () => {
             onClick={handleSubmit}
             className="rounded-xl bg-blue-900 hover:bg-blue-700 text-white py-4 w-full"
           >
-            Create Gig
+            Update Gig
           </button>
         </div>
       </div>
@@ -321,4 +346,4 @@ const Addgigs = () => {
   );
 };
 
-export default Addgigs;
+export default Editgig;

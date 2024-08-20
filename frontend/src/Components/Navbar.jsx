@@ -90,10 +90,11 @@ const Navbar = () => {
       <Toaster />
       <div className="flex justify-between max-w-[90%] mx-auto p-4">
         <div className="text-xl sm:text-3xl font-bold ">
-          <Link to="/"> 
+          <Link to="/" className="flex justify-center items-center gap-2"> 
+          <img src="/images/GV_fav.png" alt="" className="w-11" />
             <span className="">GigVerse</span>
-          </Link>
           <span className="text-2xl sm:text-4xl text-blue-400">.</span>
+          </Link>
         </div>
 
         <div className="flex items-center gap-5 font-semibold">
@@ -124,7 +125,7 @@ const Navbar = () => {
                   alt=""
                   className="w-10 h-10 sm:w-12 sm:h-12 border-2 object-cover rounded-full"
                 />
-                <span className="text-sm sm:text-base">{currentUser.fullname}</span>
+                <span className="text-sm sm:text-base">{currentUser.fullname.split(' ')[0]}</span>
               </div>
 
               {open && (

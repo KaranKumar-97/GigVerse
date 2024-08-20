@@ -85,3 +85,31 @@ export const getTopGigs = async (req, res, next) => {
       next(err);
   }
 };
+
+export const editGig = async (req, res, next) => {
+  if (!req.isSeller)
+    return next(
+      res.status(403).json({ message: "Only sellers can edit gigs" })
+    );
+
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig) {
+      return res.status(404).json({ message: "Gig not found" });
+    }
+
+    if (gig.userId !== req.userId) {
+      return res.status(403).json({ message: "You can only edit your own gigs" });
+    }
+
+    const updatedGig = await Gig.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+
+    res.status(200).json({updatedGig, message: "Gig updated successfully!"});
+  } catch (err) {
+    next(err);
+  }
+};
