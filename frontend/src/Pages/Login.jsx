@@ -68,6 +68,54 @@ const Login = () => {
   
   }
 
+  const handleTestUserLogin = async () => {
+    const testUserData = {
+      email: "testuser@gigverse.com",
+      password: "testuser"
+    };
+    
+    setLoginData(testUserData);
+    setEmailError("");
+    setPasswordError("");
+    
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, testUserData, {withCredentials: true});
+      const user = res.data;
+      
+      login(user);
+      toast.success("Test user logged in successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 1400);
+    } catch (err) {
+      toast.error(err?.response?.data?.error || err.message);
+    }
+  };
+
+  const handleTestSellerLogin = async () => {
+    const testSellerData = {
+      email: "testseller@gigverse.com",
+      password: "testseller"
+    };
+    
+    setLoginData(testSellerData);
+    setEmailError("");
+    setPasswordError("");
+    
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, testSellerData, {withCredentials: true});
+      const user = res.data;
+      
+      login(user);
+      toast.success("Test seller logged in successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 1400);
+    } catch (err) {
+      toast.error(err?.response?.data?.error || err.message);
+    }
+  };
+
 
   return (
     <div>
@@ -106,7 +154,7 @@ const Login = () => {
             helperText={passwordError}
           />
 
-          <button className="bg-blue-900 w-full py-4 mt-5 rounded-xl text-white font-semibold"
+          <button className="bg-blue-900 w-full py-4 mt-5 rounded-xl text-white font-semibold hover:bg-blue-800  transition-colors"
           onClick={handleLogin}>
             Sign In
           </button>
@@ -114,6 +162,22 @@ const Login = () => {
             <div className="flex flex-wrap justify-center gap-2 my-5">
 
           <p>Don't have an account?</p><button className="font-semibold" onClick={()=>navigate("/register")}>Click here to Sign Up</button>
+            </div>
+            <p>Or Sign In with Test Users</p>
+
+            <div className="flex flex-col gap-2 w-full max-w-xs mx-auto mt-6">
+              <button 
+                className="bg-blue-900 w-full py-3 rounded-lg text-white font-semibold hover:bg-blue-800 transition-colors"
+                onClick={handleTestUserLogin}
+              >
+                Test User Login
+              </button>
+              <button 
+                className="bg-blue-900 w-full py-3 rounded-lg text-white font-semibold hover:bg-blue-800 transition-colors"
+                onClick={handleTestSellerLogin}
+              >
+                Test Seller Login
+              </button>
             </div>
       </div>
     </div>
